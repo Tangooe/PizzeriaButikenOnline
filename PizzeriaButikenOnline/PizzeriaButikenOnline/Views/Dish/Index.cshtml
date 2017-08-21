@@ -10,44 +10,36 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
+@foreach (var category in Model.GroupBy(x => x.Category))
+{
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-            <th></th>
+            <th>@category.Key.Name</th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+    @foreach (var dish in category)
+    {
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => dish.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => dish.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => dish.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => dish.Price)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = dish.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = dish.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = dish.Id }) |
+                </td>
+            </tr>
+        </tbody>
+    }
 }
-    </tbody>
 </table>

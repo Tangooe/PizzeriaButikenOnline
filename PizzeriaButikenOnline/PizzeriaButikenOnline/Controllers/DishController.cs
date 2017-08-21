@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Data;
 using System.Linq;
 
@@ -18,7 +19,7 @@ namespace PizzeriaButikenOnline.Controllers
         // GET: Dish
         public ActionResult Index()
         {
-            return View(_context.Dishes.ToList());
+            return View(_context.Dishes.Include(x => x.Category));
         }
 
         // GET: Dish/Details/5

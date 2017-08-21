@@ -58,6 +58,17 @@ namespace PizzeriaButikenOnline.Data
                             x.Name == "Skinka" || 
                             x.Name == "Annanass")
                             .ToList()
+                    },
+                    new Dish
+                    {
+                        Name = "Kebab Pizza",
+                        Description = "Kebab Pizza",
+                        Price = 85,
+                        Category = categories.First(x => x.Name == "Kebab Pizzor"),
+                        Igredients = ingredients.Where(x => 
+                            x.Name == "Kebab" ||
+                            x.Name == "Kebabsås")
+                            .ToList()
                     }
                 });
                 context.SaveChanges();
@@ -67,7 +78,8 @@ namespace PizzeriaButikenOnline.Data
             {
                 var adminRole = new IdentityRole { Name = "Admin" };
                 var roleResult = roleManager.CreateAsync(adminRole).Result;
-                roleManager.CreateAsync(new IdentityRole { Name = "RegularUser" });
+                var regularUserRole = new IdentityRole { Name = "RegularUser" };
+                roleManager.CreateAsync(regularUserRole);
 
                 if (!roleResult.Succeeded)
                     return;
@@ -79,7 +91,16 @@ namespace PizzeriaButikenOnline.Data
                 };
 
                 userManager.CreateAsync(user, "Abc!23");
-                userManager.AddToRoleAsync(user, adminRole.Name);
+                userManager.AddToRoleAsync(user, regularUserRole.Name);
+
+                var admin = new ApplicationUser
+                {
+                    UserName = "Tangooe@admin.com",
+                    Email = "Tangooe@admin.com"
+                };
+
+                userManager.CreateAsync(admin, "Abc!23");
+                userManager.AddToRoleAsync(admin, adminRole.Name);
             }
         }
     }
