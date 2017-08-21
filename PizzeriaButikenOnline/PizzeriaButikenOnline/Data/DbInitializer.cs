@@ -8,7 +8,7 @@ namespace PizzeriaButikenOnline.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if(!context.Ingredients.Any())
             {
@@ -42,13 +42,23 @@ namespace PizzeriaButikenOnline.Data
                 context.SaveChanges();
             }
 
-            var user = new ApplicationUser
+            if(!context.Users.Any())
             {
-                UserName = "Tangooe@user.com",
-                Email = "Tangooe@user.com"
-            };
+                var adminRole = new IdentityRole { Name = "Admin" };
+                var roleResult = roleManager.CreateAsync(adminRole).Result;
 
-            userManager.CreateAsync(user, "Abc!23");
+                if (!roleResult.Succeeded)
+                    return;
+
+                var user = new ApplicationUser
+                {
+                    UserName = "Tangooe@user.com",
+                    Email = "Tangooe@user.com"
+                };
+
+                userManager.CreateAsync(user, "Abc!23");
+                userManager.AddToRoleAsync(user, adminRole.Name);
+            }
         }
     }
 }

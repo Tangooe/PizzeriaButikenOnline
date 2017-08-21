@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzeriaButikenOnline.Data;
+using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
+    [Authorize]
     public class DishController : Controller
     {
         private ApplicationDbContext _context;

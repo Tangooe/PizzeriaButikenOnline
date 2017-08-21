@@ -38,13 +38,14 @@ namespace PizzeriaButikenOnline
 
             // Add application services.
             services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddTransient<RoleManager<IdentityRole>>();
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -68,7 +69,7 @@ namespace PizzeriaButikenOnline
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Initialize(context, userManager);
+            DbInitializer.Initialize(context, userManager, roleManager);
         }
     }
 }
