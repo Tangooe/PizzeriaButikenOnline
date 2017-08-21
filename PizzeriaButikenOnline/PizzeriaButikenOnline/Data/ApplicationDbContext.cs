@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Models;
-using PizzeriaButikenOnline.Entities;
 
 namespace PizzeriaButikenOnline.Data
 {

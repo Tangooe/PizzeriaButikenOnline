@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PizzeriaButikenOnline.Entities
+namespace PizzeriaButikenOnline.Models
 {
     public class Ingredient
     {

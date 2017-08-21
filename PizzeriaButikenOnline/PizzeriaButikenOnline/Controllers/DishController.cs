@@ -10,7 +10,7 @@ namespace PizzeriaButikenOnline.Controllers
     [Authorize]
     public class DishController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public DishController(ApplicationDbContext context)
         {
@@ -19,13 +19,13 @@ namespace PizzeriaButikenOnline.Controllers
         // GET: Dish
         public ActionResult Index()
         {
-            return View(_context.Dishes.Include(x => x.Category));
+            return View(_context.Dishes.Include(x => x.Category).Include(x => x.Igredients));
         }
 
         // GET: Dish/Details/5
         public ActionResult Details(int id)
         {
-            var dish = _context.Dishes.FirstOrDefault(x => x.Id == id);
+            var dish = _context.Dishes.Include(x => x.Category).Include(x => x.Igredients).FirstOrDefault(x => x.Id == id);
 
             if (dish == null)
                 return NotFound();

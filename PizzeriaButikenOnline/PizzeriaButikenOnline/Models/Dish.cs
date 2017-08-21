@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace PizzeriaButikenOnline.Entities
+namespace PizzeriaButikenOnline.Models
 {
     public class Dish
     {
@@ -11,10 +11,6 @@ namespace PizzeriaButikenOnline.Entities
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string Description { get; set; }
 
         [Required]
         [Range(0, 5000)]

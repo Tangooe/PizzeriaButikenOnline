@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PizzeriaButikenOnline.Entities.Dish>
+﻿@using PizzeriaButikenOnline.Models
+@model IEnumerable<Dish>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,37 +10,18 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
 @foreach (var category in Model.GroupBy(x => x.Category))
 {
-    <thead>
-        <tr>
-            <th>@category.Key.Name</th>
-        </tr>
-    </thead>
+    <div>
+        <h2>@category.Key.Name</h2>
+
+    </div>
     @foreach (var dish in category)
     {
-        <tbody>
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => dish.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => dish.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => dish.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => dish.Price)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = dish.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = dish.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = dish.Id }) |
-                </td>
-            </tr>
-        </tbody>
+        <div class="dish">
+            <h3><a asp-action="Details" asp-route-id="@dish.Id">@dish.Name   @dish.Price:-</a></h3>
+            <p>@string.Join(", ", dish.Igredients.Select(i => i.Name))</p>
+        </div>
+
     }
 }
-</table>
