@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Entities;
 
 namespace PizzeriaButikenOnline.Data
 {
@@ -18,9 +19,14 @@ namespace PizzeriaButikenOnline.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Dish>().HasMany<Ingredient>().WithOne();
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Dish> Dishes { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
     }
 }

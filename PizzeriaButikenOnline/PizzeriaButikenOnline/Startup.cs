@@ -44,7 +44,7 @@ namespace PizzeriaButikenOnline
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -68,7 +68,7 @@ namespace PizzeriaButikenOnline
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Initialize(userManager);
+            DbInitializer.Initialize(context, userManager);
         }
     }
 }
