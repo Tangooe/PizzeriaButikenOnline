@@ -21,6 +21,9 @@ namespace PizzeriaButikenOnline.Entities
         public decimal Price { get; set; }
 
         [Required]
+        public Category Category { get; set; }
+
+        [Required]
         public ICollection<Ingredient> Igredients { get; set; }
     }
 }

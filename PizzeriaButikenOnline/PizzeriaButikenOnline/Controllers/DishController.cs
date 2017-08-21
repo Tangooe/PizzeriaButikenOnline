@@ -24,7 +24,12 @@ namespace PizzeriaButikenOnline.Controllers
         // GET: Dish/Details/5
         public ActionResult Details(int id)
         {
-            return View(_context.Dishes.First(x =>x .Id == id));
+            var dish = _context.Dishes.FirstOrDefault(x => x.Id == id);
+
+            if (dish == null)
+                return NotFound();
+
+            return View(dish);
         }
 
         // GET: Dish/Create

@@ -12,11 +12,24 @@ namespace PizzeriaButikenOnline.Data
         {
             if(!context.Ingredients.Any())
             {
+                var categories = new List<Category>
+                {
+                    new Category { Name = "Italienska Pizzor" },
+                    new Category { Name = "Kebab Pizzor" },
+                    new Category { Name = "Sallader" },
+                    new Category { Name = "Drycker" }
+                };
+
                 var ingredients = new List<Ingredient>
                 {
                     new Ingredient { Name = "Skinka" },
                     new Ingredient { Name = "Champinjoner" },
-                    new Ingredient { Name = "Annanass" }
+                    new Ingredient { Name = "Annanass" },
+                    new Ingredient { Name = "Färska Tomater" },
+                    new Ingredient { Name = "Kebab" },
+                    new Ingredient { Name = "Isbergssallad" },
+                    new Ingredient { Name = "Vitlökssås" },
+                    new Ingredient { Name = "Kebabsås" }
                 };
 
                 context.Ingredients.AddRange(ingredients);
@@ -28,15 +41,23 @@ namespace PizzeriaButikenOnline.Data
                     {
                         Name = "Capprisiosa",
                         Description = "Klassisk Italiensk Pizza",
-                        Price = 80,
-                        Igredients = ingredients.Where(x => x.Name == "Skinka" || x.Name == "Champinjoner").ToList()
+                        Category = categories.First(x => x.Name =="Italienska Pizzor"),
+                        Price = 80,             
+                        Igredients = ingredients.Where(x => 
+                            x.Name == "Skinka" || 
+                            x.Name == "Champinjoner")
+                            .ToList()
                     },
                     new Dish
                     {
                         Name = "Hawaii",
                         Description = "Klassisk Italiensk Pizza",
                         Price = 80,
-                        Igredients = ingredients.Where(x => x.Name == "Skinka" || x.Name == "Annanass").ToList()
+                        Category = categories.First(x => x.Name =="Italienska Pizzor"),
+                        Igredients = ingredients.Where(x => 
+                            x.Name == "Skinka" || 
+                            x.Name == "Annanass")
+                            .ToList()
                     }
                 });
                 context.SaveChanges();
@@ -46,6 +67,7 @@ namespace PizzeriaButikenOnline.Data
             {
                 var adminRole = new IdentityRole { Name = "Admin" };
                 var roleResult = roleManager.CreateAsync(adminRole).Result;
+                roleManager.CreateAsync(new IdentityRole { Name = "RegularUser" });
 
                 if (!roleResult.Succeeded)
                     return;
