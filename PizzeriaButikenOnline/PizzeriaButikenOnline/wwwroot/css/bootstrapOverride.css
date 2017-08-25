@@ -7,6 +7,11 @@ body {
     font-size: 17px;
 }
 
+.container {
+    padding-right: 35px;
+    padding-left: 35px;
+}
+
 .container-fluid {
     padding-right: 0;
     padding-left: 0;

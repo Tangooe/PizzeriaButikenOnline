@@ -19,16 +19,53 @@ namespace PizzeriaButikenOnline.Data
                     new Category { Name = "Drycker" }
                 };
 
+                context.Categories.AddRange(categories);
+                context.SaveChanges();
+
                 var ingredients = new List<Ingredient>
                 {
-                    new Ingredient { Name = "Skinka" },
-                    new Ingredient { Name = "Champinjoner" },
-                    new Ingredient { Name = "Annanass" },
-                    new Ingredient { Name = "Färska Tomater" },
-                    new Ingredient { Name = "Kebab" },
-                    new Ingredient { Name = "Isbergssallad" },
-                    new Ingredient { Name = "Vitlökssås" },
-                    new Ingredient { Name = "Kebabsås" }
+                    new Ingredient { Name = "Ananas" , Price = 5m },
+                    new Ingredient { Name = "Bearnaisesås" , Price = 5m },
+                    new Ingredient { Name = "Currysås" , Price = 5m },
+                    new Ingredient { Name = "Gräddfil" , Price = 5m },
+                    new Ingredient { Name = "Jalapeños" , Price = 5m },
+                    new Ingredient { Name = "Kebabsås stark" , Price = 5m },
+                    new Ingredient { Name = "Kebabsås mild" , Price = 5m },
+                    new Ingredient { Name = "Köttfärs" , Price = 5m },
+                    new Ingredient { Name = "Mozzarellaost" , Price = 5m },
+                    new Ingredient { Name = "Ost" , Price = 5m },
+                    new Ingredient { Name = "Persilja" , Price = 5m },
+                    new Ingredient { Name = "Rhode Islandsås" , Price = 5m },
+                    new Ingredient { Name = "Sardeller" , Price = 5m },
+                    new Ingredient { Name = "Tacokryddmix" , Price = 5m },
+                    new Ingredient { Name = "Vitlökssås" , Price = 5m },
+                    new Ingredient { Name = "Bacon" , Price = 5m },
+                    new Ingredient { Name = "Curry" , Price = 5m },
+                    new Ingredient { Name = "Feferoni" , Price = 5m },
+                    new Ingredient { Name = "Gorgonzolaost" , Price = 5m },
+                    new Ingredient { Name = "Gurka" , Price = 5m },
+                    new Ingredient { Name = "Kebabkött" , Price = 5m },
+                    new Ingredient { Name = "Köttfärssås" , Price = 5m },
+                    new Ingredient { Name = "Musslor" , Price = 5m },
+                    new Ingredient { Name = "Oxfilé" , Price = 5m },
+                    new Ingredient { Name = "Pesto" , Price = 5m },
+                    new Ingredient { Name = "Räkor" , Price = 5m },
+                    new Ingredient { Name = "Scampi" , Price = 5m },
+                    new Ingredient { Name = "Tacosås" , Price = 5m },
+                    new Ingredient { Name = "Tomatsås" , Price = 5m },
+                    new Ingredient { Name = "Banan" , Price = 5m },
+                    new Ingredient { Name = "Champinjoner" , Price = 5m },
+                    new Ingredient { Name = "Fläskfile" , Price = 5m },
+                    new Ingredient { Name = "Isbergssallad" , Price = 5m },
+                    new Ingredient { Name = "Kycklingfilé" , Price = 5m },
+                    new Ingredient { Name = "Lök" , Price = 5m },
+                    new Ingredient { Name = "Oliver" , Price = 5m },
+                    new Ingredient { Name = "Paprika" , Price = 5m },
+                    new Ingredient { Name = "Salami" , Price = 5m },
+                    new Ingredient { Name = "Skinka" , Price = 5m },
+                    new Ingredient { Name = "Tonfisk" , Price = 5m },
+                    new Ingredient { Name = "Vitlök" , Price = 5m },
+                    new Ingredient { Name = "Ägg" , Price = 5m }
                 };
 
                 context.Ingredients.AddRange(ingredients);
@@ -53,7 +90,7 @@ namespace PizzeriaButikenOnline.Data
                         Category = categories.First(x => x.Name =="Italienska Pizzor"),
                         Ingredients = ingredients.Where(x => 
                             x.Name == "Skinka" || 
-                            x.Name == "Annanass")
+                            x.Name == "Ananas")
                             .ToList()
                     },
                     new Dish

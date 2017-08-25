@@ -10,5 +10,9 @@ namespace PizzeriaButikenOnline.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
+        [Required]
+        [Range(0,50)]
+        public decimal Price { get; set; }
     }
 }

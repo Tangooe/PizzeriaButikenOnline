@@ -2,7 +2,7 @@
 @model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
-
+    var dishNumber = 1;
 }
 
 <div class="menu-container">
@@ -11,8 +11,6 @@
     {
         <div>
             <a asp-area="" asp-controller="Dish" asp-action="Create"><i class="glyphicon glyphicon-plus"></i> Lägg till Maträtt</a>
-            <br/>
-            <a href="#"><i class="glyphicon glyphicon-plus"></i> Lägg till Kategori</a>
         </div>
     }
     @foreach (var category in Model.Menu.GroupBy(d => d.Category))
@@ -24,7 +22,7 @@
                 <li>
                     <a href="#">
                         <div class="dish-number">
-                            @dish.Id
+                            <p>@dishNumber</p>
                         </div>
                         <div class="dish-details">
                             <div class="dish-name">
@@ -46,7 +44,10 @@
                             <a href="#">Delete</a>
                         </div>
                     }
-
+                    
+                    @{
+                        dishNumber++;
+                    }
                 </li>
             }
         </ul>
