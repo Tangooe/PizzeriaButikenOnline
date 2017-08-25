@@ -1,5 +1,10 @@
 ﻿html {
     font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+
+body {
+    font-size: 17px;
 }
 .navbar-inverse {
     background-color: #393939;
@@ -12,4 +17,28 @@
 
 .navbar-inverse .navbar-brand {
     color: #fff;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    padding: 0 15px;
+    font-size: 17px;
+    height: 45px;
+    border-radius: 9px;
+}
+
+.form-control:focus {
+    border-color: #2196f3;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.btn {
+    margin-bottom: 6px;
+    padding: 7px 20px;
+    font-size: 17px;
+    border-radius: 9px;
 }
