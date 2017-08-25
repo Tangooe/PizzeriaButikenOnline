@@ -28,9 +28,12 @@
                             <div class="dish-name">
                                 <span>@dish.Name</span>
                             </div>
-                            <div class="dish-ingredients">
-                                @string.Join(", ", dish.Ingredients.Select(i => i.Name))
-                            </div>
+                            @if (dish.Ingredients.Any())
+                            {
+                                <div class="dish-ingredients">
+                                    @string.Join(", ", dish.Ingredients.Select(i => i.Name))
+                                </div>
+                            }
                         </div>
                         <div class="dish-price">
                             @dish.Price:- <i class="glyphicon glyphicon-shopping-cart"></i>
