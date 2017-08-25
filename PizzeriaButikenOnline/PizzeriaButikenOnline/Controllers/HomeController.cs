@@ -18,14 +18,24 @@ namespace PizzeriaButikenOnline.Controllers
         }
         public IActionResult Index()
         {
-            var menu = _context.Dishes
-                .Include(d => d.Ingredients)
+            var dishes = _context.Dishes
+                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                 .Include(d => d.Category)
+                .ToList();
+
+            var dishViewModels = dishes.Select(dish => new DishViewModel
+                {
+                    Id = dish.Id,
+                    Name = dish.Name,
+                    Price = dish.Price,
+                    Category = dish.Category,
+                    Ingredients = dish.DishIngredients.Select(di => di.Ingredient).ToList()
+                })
                 .ToList();
 
             var viewModel = new HomeViewModel
             {
-                Menu = menu,
+                Menu = dishViewModels,
                 ShowAdminActions = User.IsInRole("Admin")
             };
 

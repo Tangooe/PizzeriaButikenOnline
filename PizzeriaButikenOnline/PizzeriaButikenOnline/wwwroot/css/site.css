@@ -38,6 +38,8 @@ span.field-validation-error {
 }
 
 .dish-category {
+    color: red;
+    font-family: 'Lobster', cursive;
     text-align: left;
     border-bottom: 2px dotted #393939;
 }
@@ -47,18 +49,36 @@ span.field-validation-error {
     padding: 20px;
 }
 
+.menu-container > h1 {
+    color: red;
+    font-family: 'Lobster', cursive;
+    text-align: center;
+}
+
 .menu {
     list-style: none;
 }
 
 .menu > li {
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+}
+
+.menu > li .dish-number {
+    color: #393939;
+    font-weight: bold;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+}
+
+.menu > li .dish-ingredients {
+    color: #a9a9a9;
 }
 
 .menu > li .dish-details {
     position: absolute;
-    top: 0;
+    top: 0px;
     left: 40px;
 }
 

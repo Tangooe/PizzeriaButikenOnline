@@ -16,12 +16,11 @@ namespace PizzeriaButikenOnline.Models
         [Range(0, 5000)]
         public decimal Price { get; set; }
 
-        public Category Category { get; set; }
-
         [Required]
         public int CategoryId { get; set; }
 
-        [Required]
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public Category Category { get; set; }
+
+        public ICollection<DishIngredient> DishIngredients { get; set; }
     }
 }

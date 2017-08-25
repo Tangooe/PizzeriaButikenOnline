@@ -21,7 +21,7 @@
     {
         <div>
             <h3><a asp-action="Details" asp-route-id="@dish.Id">@dish.Name   @Math.Round(dish.Price, 0):-</a></h3>
-            <p>@string.Join(", ", dish.Ingredients.Select(i => i.Name))</p>
+            <p>@string.Join(", ", dish.DishIngredients.Select(di => di.Ingredient.Name).ToList())</p>
         </div>
 
     }

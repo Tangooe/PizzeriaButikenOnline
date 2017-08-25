@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PizzeriaButikenOnline.Models
 {
@@ -14,5 +15,7 @@ namespace PizzeriaButikenOnline.Models
         [Required]
         [Range(0,50)]
         public decimal Price { get; set; }
+
+        public ICollection<DishIngredient> DishIngredients { get; set; }
     }
 }

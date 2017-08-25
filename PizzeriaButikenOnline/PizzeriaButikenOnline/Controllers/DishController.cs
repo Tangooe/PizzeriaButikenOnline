@@ -21,9 +21,9 @@ namespace PizzeriaButikenOnline.Controllers
 
         public ActionResult Index()
         {
-            return View(_context.Dishes.
-                Include(x => x.Category)
-                .Include(x => x.Ingredients)
+            return View(_context.Dishes
+                .Include(d => d.Category)
+                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                 .ToList());
         }
 
@@ -31,8 +31,8 @@ namespace PizzeriaButikenOnline.Controllers
         public ActionResult Details(int id)
         {
             var dish = _context.Dishes
-                .Include(x => x.Category)
-                .Include(x => x.Ingredients)
+                .Include(d => d.Category)
+                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                 .FirstOrDefault(x => x.Id == id);
 
             if (dish == null)
