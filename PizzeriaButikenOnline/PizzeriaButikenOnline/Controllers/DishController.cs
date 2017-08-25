@@ -58,7 +58,12 @@ namespace PizzeriaButikenOnline.Controllers
         public ActionResult Create(DishFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
+            {
+                viewModel.Ingredients = _context.Ingredients.ToList();
+                viewModel.Categories = _context.Categories.ToList();
                 return View(nameof(Create), viewModel);
+            }
+
             try
             {
                 var dish = new Dish
