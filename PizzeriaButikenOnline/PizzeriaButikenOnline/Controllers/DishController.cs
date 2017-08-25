@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Data;
+using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.View_Models;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
@@ -16,16 +18,22 @@ namespace PizzeriaButikenOnline.Controllers
         {
             _context = context;
         }
-        // GET: Dish
+
         public ActionResult Index()
         {
-            return View(_context.Dishes.Include(x => x.Category).Include(x => x.Igredients));
+            return View(_context.Dishes.
+                Include(x => x.Category)
+                .Include(x => x.Ingredients)
+                .ToList());
         }
 
-        // GET: Dish/Details/5
+
         public ActionResult Details(int id)
         {
-            var dish = _context.Dishes.Include(x => x.Category).Include(x => x.Igredients).FirstOrDefault(x => x.Id == id);
+            var dish = _context.Dishes
+                .Include(x => x.Category)
+                .Include(x => x.Ingredients)
+                .FirstOrDefault(x => x.Id == id);
 
             if (dish == null)
                 return NotFound();
@@ -33,20 +41,35 @@ namespace PizzeriaButikenOnline.Controllers
             return View(dish);
         }
 
-        // GET: Dish/Create
+
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new DishFormViewModel
+            {
+                Categories = _context.Categories.ToList(),
+                Ingredients = _context.Ingredients.ToList()
+            };
+
+            return View(viewModel);
         }
 
-        // POST: Dish/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(DishFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+                return View(nameof(Create), viewModel);
             try
             {
-                // TODO: Add insert logic here
+                var dish = new Dish
+                {
+                    Name =  viewModel.Name,
+                    Price = viewModel.Price,
+                    CategoryId = viewModel.Category
+                };
+
+                _context.Dishes.Add(dish);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -56,13 +79,11 @@ namespace PizzeriaButikenOnline.Controllers
             }
         }
 
-        // GET: Dish/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Dish/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -79,13 +100,11 @@ namespace PizzeriaButikenOnline.Controllers
             }
         }
 
-        // GET: Dish/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Dish/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

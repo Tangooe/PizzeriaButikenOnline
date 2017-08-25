@@ -41,7 +41,7 @@ namespace PizzeriaButikenOnline.Data
                         Name = "Capprisiosa",
                         Category = categories.First(x => x.Name =="Italienska Pizzor"),
                         Price = 80,
-                        Igredients = ingredients.Where(x =>
+                        Ingredients = ingredients.Where(x =>
                             x.Name == "Skinka" ||
                             x.Name == "Champinjoner")
                             .ToList()
@@ -51,7 +51,7 @@ namespace PizzeriaButikenOnline.Data
                         Name = "Hawaii",
                         Price = 80,
                         Category = categories.First(x => x.Name =="Italienska Pizzor"),
-                        Igredients = ingredients.Where(x => 
+                        Ingredients = ingredients.Where(x => 
                             x.Name == "Skinka" || 
                             x.Name == "Annanass")
                             .ToList()
@@ -61,7 +61,7 @@ namespace PizzeriaButikenOnline.Data
                         Name = "Kebab Pizza",
                         Price = 85,
                         Category = categories.First(x => x.Name == "Kebab Pizzor"),
-                        Igredients = ingredients.Where(x => 
+                        Ingredients = ingredients.Where(x => 
                             x.Name == "Kebab" ||
                             x.Name == "Kebabsås")
                             .ToList()

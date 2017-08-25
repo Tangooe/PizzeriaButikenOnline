@@ -1,7 +1,11 @@
-﻿@model Dish
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model PizzeriaButikenOnline.View_Models.DishFormViewModel
 
 @{
     ViewData["Title"] = "Create";
+    var categories = new SelectList(Model.Categories, "Id", "Name");
+    var ingredients = new SelectList(Model.Ingredients, "Id", "Name");
 }
 
 <h2>Create</h2>
@@ -13,11 +17,6 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -28,14 +27,22 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control" asp-items="categories">
+                    <option selected="selected"></option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
+            <hr/>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    <div class="col-md-6">
+        @foreach (var ingredient in Model.Ingredients.OrderBy(x => x.Name))
+        {
+            <div class="btn btn-default btn-sm">@ingredient.Name</div>
+        }
+    </div>
 </div>
 
 @section Scripts {
