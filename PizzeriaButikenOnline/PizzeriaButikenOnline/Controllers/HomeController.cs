@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PizzeriaButikenOnline.Data;
+using PizzeriaButikenOnline.Models;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Models;
 
 namespace PizzeriaButikenOnline.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            return View();
+            var menu = _context.Dishes
+                .Include(d => d.Ingredients)
+                .Include(d => d.Category)
+                .ToList();
+
+            return View(menu);
         }
 
         public IActionResult About()

@@ -6,6 +6,16 @@
 body {
     font-size: 17px;
 }
+
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+    max-height: 400px;
+}
+
 .navbar-inverse {
     background-color: #393939;
     border-color: #393939;
