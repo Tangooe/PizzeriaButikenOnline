@@ -45,7 +45,7 @@ span.field-validation-error {
 }
 
 .menu-container {
-    border: 1px solid #393939;
+    border: 1px solid #a9a9a9;
     padding: 20px;
 }
 
@@ -65,7 +65,7 @@ span.field-validation-error {
 }
 
 .menu > li .dish-number {
-    color: #393939;
+    color: #a9a9a9;
     font-weight: bold;
     position: absolute;
     top: 5px;
@@ -83,7 +83,8 @@ span.field-validation-error {
 }
 
 .menu > li .dish-manage {
-    margin-top: -50px;
+    margin-top: -25px;
+    margin-right: 80px;
     float: right;
     font-weight: bold;
 }
@@ -100,7 +101,7 @@ span.field-validation-error {
     text-decoration: underline;
 }
 
-.dish-price {
+.menu > li .dish-price {
     text-align: right;
 }
 

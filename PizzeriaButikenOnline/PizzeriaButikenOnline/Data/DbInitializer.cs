@@ -15,7 +15,7 @@ namespace PizzeriaButikenOnline.Data
                 {
                     new Category {Name = "Italienska Pizzor"},
                     new Category {Name = "Specialpizzor"},
-                    new Category {Name = "Sallader"},
+                    new Category {Name = "Mexikanska pizzor"},
                     new Category {Name = "Drycker"}
                 });
 
@@ -78,6 +78,11 @@ namespace PizzeriaButikenOnline.Data
                     new Dish { Name = "Kebabpizza special", CategoryId = 2, Price = 95m },
                     new Dish { Name = "Kyckling", CategoryId = 2, Price = 90m },
                     new Dish { Name = "Santa Cruz", CategoryId = 2, Price = 95m },
+                    new Dish { Name = "Mexicana", CategoryId = 3, Price = 90m },
+                    new Dish { Name = "Azteka", CategoryId = 3, Price = 90m },
+                    new Dish { Name = "Acapulco", CategoryId = 3, Price = 95m },
+
+                    //Beverages
                     new Dish { Name = "Fanta 2l", CategoryId = 4, Price = 35m },
                     new Dish { Name = "Coca Cola 2l", CategoryId = 4, Price = 35m },
                     new Dish { Name = "Coca Cola Zero 2l", CategoryId = 4, Price = 35m },
@@ -137,7 +142,31 @@ namespace PizzeriaButikenOnline.Data
                     new DishIngredient { DishId = 8, IngredientId = 11 },
                     new DishIngredient { DishId = 8, IngredientId = 5 },
                     new DishIngredient { DishId = 8, IngredientId = 14 },
-
+                    //Mexicana
+                    new DishIngredient { DishId = 9, IngredientId = 29 },
+                    new DishIngredient { DishId = 9, IngredientId = 10 },
+                    new DishIngredient { DishId = 9, IngredientId = 8 },
+                    new DishIngredient { DishId = 9, IngredientId = 28 },
+                    new DishIngredient { DishId = 9, IngredientId = 41 },
+                    new DishIngredient { DishId = 9, IngredientId = 5 },
+                    new DishIngredient { DishId = 9, IngredientId = 14 },
+                    //Azteka
+                    new DishIngredient { DishId = 10, IngredientId = 29 },
+                    new DishIngredient { DishId = 10, IngredientId = 10 },
+                    new DishIngredient { DishId = 10, IngredientId = 39 },
+                    new DishIngredient { DishId = 10, IngredientId = 4 },
+                    new DishIngredient { DishId = 10, IngredientId = 5 },
+                    new DishIngredient { DishId = 10, IngredientId = 14 },
+                    //Acapulco
+                    new DishIngredient { DishId = 11, IngredientId = 29 },
+                    new DishIngredient { DishId = 11, IngredientId = 10 },
+                    new DishIngredient { DishId = 11, IngredientId = 24 },
+                    new DishIngredient { DishId = 11, IngredientId = 31 },
+                    new DishIngredient { DishId = 11, IngredientId = 28 },
+                    new DishIngredient { DishId = 11, IngredientId = 35 },
+                    new DishIngredient { DishId = 11, IngredientId = 41 },
+                    new DishIngredient { DishId = 11, IngredientId = 5 },
+                    new DishIngredient { DishId = 11, IngredientId = 14 },
                 });
 
                 context.SaveChanges();

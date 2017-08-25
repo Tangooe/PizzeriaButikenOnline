@@ -83,14 +83,6 @@ body {
     padding: 2px;
 }
 
-a {
-    color: #393939;
-}
-
-a:hover, a:active, a:visited, a:focus {
-    color: #393939;
-}
-
 .glyphicon-shopping-cart {
     color: #81C02F;
     font-size: 18px;
@@ -99,4 +91,16 @@ a:hover, a:active, a:visited, a:focus {
 .glyphicon-plus {
     color: #81C02F;
     font-size: 18px;
+}
+
+.text-danger {
+    color:red
+}
+
+.text-warning {
+    color: Orange
+}
+
+.text-primary {
+    color: #393939;
 }

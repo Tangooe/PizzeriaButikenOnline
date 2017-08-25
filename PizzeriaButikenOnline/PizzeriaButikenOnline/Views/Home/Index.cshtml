@@ -20,9 +20,9 @@
             @foreach (var dish in category)
             {
                 <li>
-                    <a href="#">
+                    <a class="text-capitalize text-primary" href="#">
                         <div class="dish-number">
-                            <p>@dishNumber</p>
+                            <p>@dishNumber.</p>
                         </div>
                         <div class="dish-details">
                             <div class="dish-name">
@@ -39,9 +39,9 @@
                     @if (Model.ShowAdminActions)
                     {
                         <div class="dish-manage">
-                            <a href="#">Edit</a>
+                            <a class="text-warning" href="#">Edit</a>
                             <span> | </span>
-                            <a href="#">Delete</a>
+                            <a class="text-danger" href="#">Delete</a>
                         </div>
                     }
                     
