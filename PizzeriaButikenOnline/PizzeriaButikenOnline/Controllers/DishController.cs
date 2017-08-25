@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
-using PizzeriaButikenOnline.View_Models;
+using PizzeriaButikenOnline.ViewModels;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers

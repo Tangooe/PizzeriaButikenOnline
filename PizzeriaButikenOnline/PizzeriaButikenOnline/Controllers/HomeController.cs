@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.ViewModels;
 using System.Diagnostics;
 using System.Linq;
 
@@ -22,7 +23,13 @@ namespace PizzeriaButikenOnline.Controllers
                 .Include(d => d.Category)
                 .ToList();
 
-            return View(menu);
+            var viewModel = new HomeViewModel
+            {
+                Menu = menu,
+                ShowAdminActions = User.IsInRole("Admin")
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult About()

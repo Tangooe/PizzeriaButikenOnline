@@ -1,7 +1,5 @@
-﻿@using System.Collections.Generic
-@using System.Linq
-@using System.Runtime.InteropServices.ComTypes
-@model IEnumerable<Dish>
+﻿@using System.Linq
+@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
 
@@ -9,7 +7,15 @@
 
 <div class="menu-container">
     <h1>Meny</h1>
-    @foreach (var category in Model.GroupBy(d => d.Category))
+    @if (Model.ShowAdminActions)
+    {
+        <div>
+            <a asp-area="" asp-controller="Dish" asp-action="Create"><i class="glyphicon glyphicon-plus"></i> Lägg till Maträtt</a>
+            <br/>
+            <a href="#"><i class="glyphicon glyphicon-plus"></i> Lägg till Kategori</a>
+        </div>
+    }
+    @foreach (var category in Model.Menu.GroupBy(d => d.Category))
     {
         <h2 class="dish-category">@category.Key.Name</h2>
         <ul class="menu">
@@ -32,7 +38,7 @@
                             @dish.Price:- <i class="glyphicon glyphicon-shopping-cart"></i>
                         </div>
                     </a>
-                    @if (User.IsInRole("Admin"))
+                    @if (Model.ShowAdminActions)
                     {
                         <div class="dish-manage">
                             <a href="#">Edit</a>
