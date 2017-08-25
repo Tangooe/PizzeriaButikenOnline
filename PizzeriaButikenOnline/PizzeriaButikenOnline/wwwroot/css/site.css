@@ -6,8 +6,7 @@
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 0;
-    padding-right: 0;
+    margin-top: 30px;
 }
 
 span.field-validation-error {
@@ -37,3 +36,60 @@ span.field-validation-error {
         display: none;
     }
 }
+
+.dish-category {
+    text-align: left;
+    border-bottom: 2px dotted #393939;
+}
+
+.menu-container {
+    border: 1px solid #393939;
+    padding: 20px;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu > li {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.menu > li .dish-details {
+    position: absolute;
+    top: 0;
+    left: 40px;
+}
+
+.menu > li .dish-manage {
+    margin-top: -50px;
+    float: right;
+    font-weight: bold;
+}
+
+.menu-category {
+    text-align: center;
+}
+
+.dish-name {
+    font-weight: bold;
+    font-size: 22px;
+}
+.dish-name:hover {
+    text-decoration: underline;
+}
+
+.dish-price {
+    text-align: right;
+}
+
+.menu > li > a {
+    text-decoration: none;
+}
+
+.menu > li > a:hover {
+    color: #000;
+}
+
+

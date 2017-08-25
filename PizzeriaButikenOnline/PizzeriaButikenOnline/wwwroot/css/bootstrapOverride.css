@@ -1,6 +1,6 @@
 ﻿html {
     font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-
+    color: #393939;
 }
 
 body {
@@ -71,4 +71,22 @@ body {
     padding: 7px 20px;
     font-size: 17px;
     border-radius: 9px;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border-top: none;
+    padding: 2px;
+}
+
+a {
+    color: #393939;
+}
+
+a:hover, a:active, a:visited, a:focus {
+    color: #393939;
+}
+
+.glyphicon-shopping-cart {
+    color: #81C02F;
+    font-size: 18px;
 }

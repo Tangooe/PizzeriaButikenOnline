@@ -1,21 +1,48 @@
 ﻿@using System.Collections.Generic
 @using System.Linq
+@using System.Runtime.InteropServices.ComTypes
 @model IEnumerable<Dish>
 @{
     ViewData["Title"] = "Home Page";
+
 }
 
+<div class="menu-container">
+    <h1>Meny</h1>
+    @foreach (var category in Model.GroupBy(d => d.Category))
+    {
+        <h2 class="dish-category">@category.Key.Name</h2>
+        <ul class="menu">
+            @foreach (var dish in category)
+            {
+                <li>
+                    <a href="#">
+                        <div class="dish-number">
+                            @dish.Id
+                        </div>
+                        <div class="dish-details">
+                            <div class="dish-name">
+                                <span>@dish.Name</span>
+                            </div>
+                            <div class="dish-ingredients">
+                                @string.Join(", ", dish.Ingredients.Select(i => i.Name))
+                            </div>
+                        </div>
+                        <div class="dish-price">
+                            @dish.Price:- <i class="glyphicon glyphicon-shopping-cart"></i>
+                        </div>
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="dish-manage">
+                            <a href="#">Edit</a>
+                            <span> | </span>
+                            <a href="#">Delete</a>
+                        </div>
+                    }
 
-@foreach (var category in Model.GroupBy(d => d.Category))
-{
-    <h3>@category.Key.Name</h3>
-    <ul>
-        @foreach (var dish in category)
-        {
-            <li>@dish.Name 
-                <span>@string.Join(", ", dish.Ingredients.Select(i => i.Name))</span> 
-                <span>@dish.Price:-</span>
-            </li>
-        }
-    </ul>
-}
+                </li>
+            }
+        </ul>
+    }
+</div>
