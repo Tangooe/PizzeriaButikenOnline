@@ -1,0 +1,57 @@
+﻿@model CartIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Din Kundvagn</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Antal</th>
+        <th>Maträtt</th>
+        <th class="text-right">Pris</th>
+        <th class="text-right">Totalt</th>
+        <th>Hantera</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var line in Model.Cart.Lines)
+    {
+        <tr>
+            <td class="text-center">
+                @line.Quantity
+            </td>
+            <td class="text-left">@line.Dish.Name</td>
+            <td class="text-right">@line.Dish.Price.ToString("c")</td>
+            <td class="text-right">@((line.Quantity * line.Dish.Price).ToString("c"))</td>
+            <td>
+                <form asp-action="RemoveFromCart" asp-route-dishId="@line.Dish.Id" method="post">
+                    <input asp-for="ReturnUrl" type="hidden" />
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Ta Bort
+                    </button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3" class="text-right">Totalt:</td>
+        <td class="text-right">@Model.Cart.ComputeTotalValue().ToString("c")</td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table>
+
+<div class="text-right">
+    <a class="btn btn-primary" asp-action="Index" asp-controller="Home">Fortsätt att handla</a>
+    <form asp-action="Checkout" asp-controller="Order">
+        <button type="submit" class="btn btn-primary" >
+            Checkout
+        </button>
+    </form>
+</div>
+

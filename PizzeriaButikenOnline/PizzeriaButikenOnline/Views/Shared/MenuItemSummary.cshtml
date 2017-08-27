@@ -1,0 +1,49 @@
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using PizzeriaButikenOnline.Extensions
+@model DishViewModel
+    
+<a data-dish-id="@Model.Id" class="js-add-to-cart text-capitalize text-primary">
+    <div class="dish-number">
+        <p>@Model.DishNumber.</p>
+    </div>
+    <div class="dish-details">
+        <div class="dish-name">
+            <span>@Model.Name</span>
+        </div>
+        @if (Model.Ingredients.Any())
+        {
+            <div class="dish-ingredients">
+                @string.Join(", ", Model.Ingredients.Select(i => i.Name))
+            </div>
+        }
+    </div>
+    <div class="dish-price">
+        @Model.Price:- <i class="text-success glyphicon glyphicon-shopping-cart"></i>
+    </div>
+</a>
+@if (Model.ShowAdminActions)
+{
+    <div class="dish-manage">
+        <a class="text-warning" href="#">Edit</a>
+        <span> | </span>
+        <a class="text-danger" href="#">Delete</a>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(docuemnt).ready(function() {
+            $(".js-add-to-cart").click(function(e) {
+                    var button = $(e.target);
+                    $.post("/cart/addtocart", { dishId: button.attr("data-dish-id") })
+                        .done(function() {
+                            
+                        })
+                        .fail(function() {
+                            alert("something failed");
+                        });
+            });
+        });
+    </script>
+}

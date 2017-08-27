@@ -47,7 +47,7 @@ namespace PizzeriaButikenOnline.Controllers
             var viewModel = new DishFormViewModel
             {
                 Categories = _context.Categories.ToList(),
-                Ingredients = _context.Ingredients.ToList()
+                AllIngredients = _context.Ingredients.ToList()
             };
 
             return View(viewModel);
@@ -59,7 +59,7 @@ namespace PizzeriaButikenOnline.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.Ingredients = _context.Ingredients.ToList();
+                viewModel.AllIngredients = _context.Ingredients.ToList();
                 viewModel.Categories = _context.Categories.ToList();
                 return View(nameof(Create), viewModel);
             }
@@ -72,15 +72,25 @@ namespace PizzeriaButikenOnline.Controllers
                     Price = viewModel.Price,
                     CategoryId = viewModel.Category
                 };
-
                 _context.Dishes.Add(dish);
+
+                if (viewModel.SelectedIngredients != null)
+                {
+                    _context.DishIngredients.AddRange(viewModel.SelectedIngredients.Select(i => new DishIngredient
+                    {
+                        Dish = dish,
+                        IngredientId = i.Id
+                    }).ToList());
+                }
                 _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             catch
             {
-                return View();
+                viewModel.AllIngredients = _context.Ingredients.ToList();
+                viewModel.Categories = _context.Categories.ToList();
+                return View(nameof(Create), viewModel);
             }
         }
 

@@ -5,7 +5,6 @@
 @{
     ViewData["Title"] = "Create";
     var categories = new SelectList(Model.Categories, "Id", "Name");
-    var ingredients = new SelectList(Model.Ingredients, "Id", "Name");
 }
 
 <h2>Skapa ny Maträtt</h2>
@@ -32,17 +31,12 @@
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div>
-                <label>Ingredienser</label><br/>
-                @*<ul class="checkbox-grid">*@
-                @foreach (var ingredient in Model.Ingredients.OrderBy(x => x.Name))
+                <label asp-for="AllIngredients"></label><br/>
+                @foreach (var ingredient in Model.AllIngredients.OrderBy(x => x.Name))
                 {
-            @*<li><input type="checkbox" value=""> @ingredient.Name</li>*@
-
                     <div class="btn btn-default btn-sm">@ingredient.Name</div>
                 }
-                @*</ul>*@
             </div>
-            <br/>
             <br/>
             <button type="submit" class="btn btn-primary">Spara</button>
         </form>

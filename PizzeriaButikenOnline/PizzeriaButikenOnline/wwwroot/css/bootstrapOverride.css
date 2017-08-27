@@ -84,12 +84,10 @@ body {
 }
 
 .glyphicon-shopping-cart {
-    color: #81C02F;
     font-size: 18px;
 }
 
 .glyphicon-plus {
-    color: #81C02F;
     font-size: 18px;
 }
 
@@ -103,4 +101,8 @@ body {
 
 .text-primary {
     color: #393939;
+}
+
+.text-success {
+    color: #81C02F;
 }

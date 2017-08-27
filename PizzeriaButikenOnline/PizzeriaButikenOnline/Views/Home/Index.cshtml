@@ -10,17 +10,17 @@
     @if (Model.ShowAdminActions)
     {
         <div>
-            <a asp-area="" asp-controller="Dish" asp-action="Create"><i class="glyphicon glyphicon-plus"></i> Lägg till Maträtt</a>
+            <a class="text-primary" asp-area="" asp-controller="Dish" asp-action="Create"><i class="text-success glyphicon glyphicon-plus"></i> Lägg till Maträtt</a>
         </div>
     }
-    @foreach (var category in Model.Menu.GroupBy(d => d.Category))
+    @foreach (var category in Model.Menu.GroupBy(d => d.Category).ToList())
     {
         <h2 class="dish-category">@category.Key.Name</h2>
         <ul class="menu">
             @foreach (var dish in category)
             {
                 <li>
-                    <a class="text-capitalize text-primary" href="#">
+                    <a class="text-capitalize text-primary">
                         <div class="dish-number">
                             <p>@dishNumber.</p>
                         </div>
@@ -28,17 +28,19 @@
                             <div class="dish-name">
                                 <span>@dish.Name</span>
                             </div>
-                            @if (dish.Ingredients.Any())
-                            {
-                                <div class="dish-ingredients">
-                                    @string.Join(", ", dish.Ingredients.Select(i => i.Name))
-                                </div>
-                            }
                         </div>
                         <div class="dish-price">
-                            @dish.Price:- <i class="glyphicon glyphicon-shopping-cart"></i>
+                            @dish.Price:- <i class="text-success glyphicon glyphicon-shopping-cart"></i>
                         </div>
                     </a>
+                    @if (dish.Ingredients.Any())
+                    {
+                        <a class="accordion text-muted text-capitalize">
+                            <div class="dish-ingredients">
+                                @string.Join(", ", dish.Ingredients.Select(i => i.Name)) <i class="glyphicon glyphicon-edit"></i>
+                            </div>
+                        </a>
+                    }
                     @if (Model.ShowAdminActions)
                     {
                         <div class="dish-manage">
@@ -47,16 +49,74 @@
                             <a class="text-danger" href="#">Delete</a>
                         </div>
                     }
-                    
+
                     @{
                         dishNumber++;
                     }
+                    <div class="accordion-panel">
+                        @foreach (var ingredient in Model.AllIngredients.OrderBy(x => x.Name))
+                        {
+                            var buttonType = dish.Ingredients.Any(i => i.Name == ingredient.Name) ? "btn-success" : "btn-default";
+                            <button class="js-toggle-ingredient btn btn-sm @buttonType">@ingredient.Name</button>
+
+                        }
+                    </div>
                 </li>
             }
         </ul>
     }
 </div>
 
+
 @section Scripts {
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+    <script>
+        $(document).ready(function() {
+            $(".js-add-to-cart").click(function(e) {
+                $.post("/cart/addtocart", { DishId: $(e.target).attr('data-dish-id') })
+                    .done(function() {
+                        //Update the cart partial view
+                    })
+                    .fail(function() {
+                        alert("something failed");
+                    });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(".js-toggle-ingredient").click(function (e) {
+                var button = $(e.target);
+                $.post("/cart/addtocart", { DishId: button.attr('data-dish-id'), IngredientId: button.attr("data-ingredient-id") })
+                    .done(function () {
+                        button
+                            .removeClass("btn-default")
+                            .addClass("btn-success");
+                        //Update the cart partial view
+                    })
+                    .fail(function () {
+                        button
+                            .toggleClass("btn-default")
+                            .toggleClass("btn-success");
+                    });
+            });
+        });
+    </script>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].onclick = function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight){
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            }
+        }
+    </script>
 }

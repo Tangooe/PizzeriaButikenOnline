@@ -11,5 +11,7 @@ namespace PizzeriaButikenOnline.ViewModels
         public decimal Price { get; set; }
         public Category Category { get; set; }
         public List<Ingredient> Ingredients { get; set; }
+
+        public bool ShowAdminActions { get; set; }
     }
 }

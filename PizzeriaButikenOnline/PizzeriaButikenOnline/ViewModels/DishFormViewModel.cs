@@ -23,10 +23,9 @@ namespace PizzeriaButikenOnline.ViewModels
 
         public IList<Category> Categories { get; set; }
 
-        [Required(ErrorMessage = "Minst en ingridiens måste vara vald")]
         [DisplayName("Ingridienser")]
-        public IList<int> Ingredient { get; set; }
+        public IList<Ingredient> SelectedIngredients { get; set; }
 
-        public IList<Ingredient> Ingredients { get; set; }
+        public IList<Ingredient> AllIngredients { get; set; }
     }
 }

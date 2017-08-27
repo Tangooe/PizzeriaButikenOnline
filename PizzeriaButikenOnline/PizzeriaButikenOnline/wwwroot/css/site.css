@@ -4,7 +4,8 @@
     background-image: url(../images/PizzaBg.png);
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 /* Wrapping element */
@@ -49,6 +50,10 @@ span.field-validation-error {
     border-bottom: 2px dotted #393939;
 }
 
+.dish-ingredients {
+    margin-left: 40px;
+}
+
 .menu-container {
     padding: 20px;
 }
@@ -65,7 +70,6 @@ span.field-validation-error {
 
 .menu > li {
     position: relative;
-    margin-bottom: 40px;
 }
 
 .menu > li .dish-number {
@@ -74,10 +78,7 @@ span.field-validation-error {
     position: absolute;
     top: 5px;
     left: 10px;
-}
-
-.menu > li .dish-ingredients {
-    color: #a9a9a9;
+    text-align: right;
 }
 
 .menu > li .dish-details {
@@ -111,7 +112,23 @@ span.field-validation-error {
 
 .menu > li > a {
     text-decoration: none;
+    cursor: pointer;
 }
+
+a.accordion {
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.accordion-panel {
+    margin-top: 10px;
+    padding: 0 40px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
 
 .menu > li > a:hover {
     color: #000;
@@ -133,4 +150,10 @@ input[type=checkbox] {
     transform: scale(1.3);
 }
 
+#cart {
+    margin-top: 13px;
+}
 
+.cart-icon {
+    color: #ffffff;
+}

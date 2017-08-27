@@ -36,6 +36,7 @@ namespace PizzeriaButikenOnline.Controllers
             var viewModel = new HomeViewModel
             {
                 Menu = dishViewModels,
+                AllIngredients = _context.Ingredients.ToList(),
                 ShowAdminActions = User.IsInRole("Admin")
             };
 

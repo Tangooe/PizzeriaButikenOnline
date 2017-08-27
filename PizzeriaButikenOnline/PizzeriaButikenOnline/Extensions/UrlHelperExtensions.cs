@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaButikenOnline.Controllers;
 
-namespace Microsoft.AspNetCore.Mvc
+namespace PizzeriaButikenOnline.Extensions
 {
     public static class UrlHelperExtensions
     {
@@ -24,6 +22,13 @@ namespace Microsoft.AspNetCore.Mvc
                 controller: "Account",
                 values: new { userId, code },
                 protocol: scheme);
+        }
+
+        public static string PathAndQuery(this HttpRequest request)
+        {
+            return request.QueryString.HasValue
+                ? $"{request.Path}{request.QueryString}"
+                : request.Path.ToString();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace PizzeriaButikenOnline.Data
         {
             if(!context.Ingredients.Any())
             {
+                #region Add Categories
+
                 context.Categories.AddRange(new List<Category>
                 {
                     new Category {Name = "Italienska Pizzor"},
@@ -18,6 +20,10 @@ namespace PizzeriaButikenOnline.Data
                     new Category {Name = "Mexikanska pizzor"},
                     new Category {Name = "Drycker"}
                 });
+
+                #endregion
+
+                #region Add Ingredients
 
                 context.Ingredients.AddRange(new List<Ingredient>
                 {
@@ -66,7 +72,11 @@ namespace PizzeriaButikenOnline.Data
                     new Ingredient {Name = "Tomater", Price = 5m }, //43
                 });
 
+#endregion
+
                 context.SaveChanges();
+
+                #region Add Dishes
 
                 context.Dishes.AddRange(new List<Dish>
                 {
@@ -88,6 +98,11 @@ namespace PizzeriaButikenOnline.Data
                     new Dish { Name = "Coca Cola Zero 2l", CategoryId = 4, Price = 35m },
                     new Dish { Name = "Sprite 2l", CategoryId = 4, Price = 35m },
                 });
+
+
+                #endregion
+
+                #region Add DishIngredients
 
                 context.DishIngredients.AddRange(new List<DishIngredient>
                 {
@@ -168,6 +183,8 @@ namespace PizzeriaButikenOnline.Data
                     new DishIngredient { DishId = 11, IngredientId = 5 },
                     new DishIngredient { DishId = 11, IngredientId = 14 },
                 });
+
+                #endregion
 
                 context.SaveChanges();
             }
