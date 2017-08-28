@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Dtos;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.ViewModels;
+using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
@@ -32,24 +34,39 @@ namespace PizzeriaButikenOnline.Controllers
             var dish = _context.Dishes.Find(dto.DishId);
 
             if (dish == null)
-                return NotFound();
+                return BadRequest();
 
-            _cart.AddItem(dish, 1);
+            _cart.AddItem(dish, dto.Quantity, _context.Ingredients.Where(i => dto.SelectedIngredients.Any(si => si == i.Id)).Distinct().ToList());
 
             return Ok();
         }
 
         [HttpPost]
-        public IActionResult RemoveFromCart(int dishId, string returnUrl)
+        public IActionResult RemoveFromCart(int lineId)
         {
-            var dish = _context.Dishes.Find(dishId);
+            _cart.RemoveLine(lineId);
 
-            if (dish == null)
-                return NotFound();
+            return Ok();
+        }
 
-            _cart.RemoveLine(dish);
+        public IActionResult ModifyCartLineIngredient(int lineId, int ingredientId)
+        {
+            var line = _cart.Lines.FirstOrDefault(l => l.Id == lineId);
+            var ingredient = _context.Ingredients.Find(ingredientId);
 
-            return RedirectToAction(nameof(Index), new { returnUrl });
+            if (line == null)
+                return BadRequest();
+
+            if (line.SelectedIngredients.Any(si => si == ingredient))
+            {
+                line.RemoveIngredient(ingredient);
+            }
+            else
+            {
+                line.AddIngredient(ingredient);
+            }
+
+            return Ok();
         }
     }
 }

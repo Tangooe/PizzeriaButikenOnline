@@ -7,16 +7,22 @@ namespace PizzeriaButikenOnline.Models
     {
         private readonly List<CartLine> _lineCollection = new List<CartLine>();
 
-        public virtual void AddItem(Dish dish, int quantity)
+        public virtual void AddItem(Dish dish, int quantity, IList<Ingredient> ingredients)
         {
-            var line = _lineCollection.FirstOrDefault(lc => lc.Dish.Id == dish.Id);
+            if (!ingredients.Any())
+                ingredients = dish.DishIngredients.Select(di => di.Ingredient).ToList();
+
+            var line = _lineCollection.FirstOrDefault(lc =>
+                lc.Dish.Id == dish.Id &&
+                lc.SelectedIngredients.Select(si => si.Id).SequenceEqual(ingredients.Select(i => i.Id)));
 
             if (line == null)
             {
                 _lineCollection.Add(new CartLine
                 {
                     Dish = dish,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    SelectedIngredients = ingredients                     
                 });
             }
             else
@@ -25,7 +31,7 @@ namespace PizzeriaButikenOnline.Models
             }
         }
 
-        public virtual void RemoveLine(Dish dish) => _lineCollection.RemoveAll(lc => lc.Dish == dish);
+        public virtual void RemoveLine(int lineId) => _lineCollection.RemoveAll(lc => lc.Id == lineId);
 
         public virtual decimal ComputeTotalValue() => _lineCollection.Sum(lc => lc.Dish.Price * lc.Quantity);
 

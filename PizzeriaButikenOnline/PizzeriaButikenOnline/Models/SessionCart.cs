@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PizzeriaButikenOnline.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace PizzeriaButikenOnline.Models
 {
@@ -19,15 +20,15 @@ namespace PizzeriaButikenOnline.Models
         [JsonIgnore]
         public ISession Session { get; private set; }
 
-        public override void AddItem(Dish dish, int quantity)
+        public override void AddItem(Dish dish, int quantity, IList<Ingredient> ingredients)
         {
-            base.AddItem(dish, quantity);
+            base.AddItem(dish, quantity, ingredients);
             Session.SetJson(nameof(Cart), this);
         }
 
-        public override void RemoveLine(Dish dish)
+        public override void RemoveLine(int lineId)
         {
-            base.RemoveLine(dish);
+            base.RemoveLine(lineId);
             Session.SetJson(nameof(Cart), this);
         }
 

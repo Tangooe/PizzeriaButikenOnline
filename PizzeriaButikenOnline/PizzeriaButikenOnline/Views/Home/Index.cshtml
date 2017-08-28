@@ -20,7 +20,7 @@
             @foreach (var dish in category)
             {
                 <li>
-                    <a class="text-capitalize text-primary">
+                    <a class="js-add-to-cart text-capitalize text-primary">
                         <div class="dish-number">
                             <p>@dishNumber.</p>
                         </div>
@@ -70,32 +70,32 @@
 
 @section Scripts {
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
-
     <script>
         $(document).ready(function() {
             $(".js-add-to-cart").click(function(e) {
-                $.post("/cart/addtocart", { DishId: $(e.target).attr('data-dish-id') })
-                    .done(function() {
-                        //Update the cart partial view
+                $.post("/cart/addtocart", { DishId: 2, Quantity: 1, SelectedIngredients: [2, 3] })
+                    .done(function () {
+                        //Update the view component here
+                        location.reload();
                     })
                     .fail(function() {
-                        alert("something failed");
+                        alert("Failed");
                     });
             });
         });
     </script>
     <script>
         $(document).ready(function() {
-            $(".js-toggle-ingredient").click(function (e) {
+            $(".js-toggle-ingredient").click(function(e) {
                 var button = $(e.target);
-                $.post("/cart/addtocart", { DishId: button.attr('data-dish-id'), IngredientId: button.attr("data-ingredient-id") })
-                    .done(function () {
+                $.post("/cart/addtocart",
+                        { DishId: button.attr('data-dish-id'), IngredientId: button.attr("data-ingredient-id") })
+                    .done(function() {
                         button
                             .removeClass("btn-default")
                             .addClass("btn-success");
-                        //Update the cart partial view
                     })
-                    .fail(function () {
+                    .fail(function() {
                         button
                             .toggleClass("btn-default")
                             .toggleClass("btn-success");
@@ -111,11 +111,11 @@
             acc[i].onclick = function() {
                 this.classList.toggle("active");
                 var panel = this.nextElementSibling;
-                if (panel.style.maxHeight){
+                if (panel.style.maxHeight) {
                     panel.style.maxHeight = null;
                 } else {
                     panel.style.maxHeight = panel.scrollHeight + "px";
-                } 
+                }
             }
         }
     </script>
