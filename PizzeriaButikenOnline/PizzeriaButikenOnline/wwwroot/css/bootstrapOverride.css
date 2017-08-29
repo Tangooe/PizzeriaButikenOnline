@@ -71,10 +71,17 @@ body {
     border-bottom-color: #fff;
 }
 
-.btn {
+.btn-lg {
     margin-bottom: 6px;
     padding: 7px 20px;
     font-size: 17px;
+    border-radius: 9px;
+}
+
+.btn-sm {
+    margin-bottom: 6px;
+    padding: 3px 11px;
+    font-size: 12px;
     border-radius: 9px;
 }
 
@@ -116,4 +123,8 @@ padding: 2px;
 
 .text-success {
     color: #81C02F;
+}
+
+tfoot {
+    border-top: 2px solid #dddddd
 }

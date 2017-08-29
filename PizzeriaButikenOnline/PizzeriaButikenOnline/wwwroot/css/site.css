@@ -111,6 +111,11 @@ a.accordion {
     transition: 0.4s;
 }
 
+a:hover {
+    cursor: pointer;
+    color: initial;
+}
+
 .accordion-panel {
     margin-top: 10px;
     background-color: white;
@@ -147,6 +152,20 @@ input[type=checkbox] {
     color: #ffffff;
 }
 
+.cart-empty-row {
+    height: 53px;
+}
+.small-font {
+    font-size: 14px;
+}
+
+.quantity-button {
+    font-size: 11px;
+    color: #ffffff;
+    background-color: #81C02F;
+    padding: 4px;
+    border-radius: 50%;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 1200px) {
     .checkbox-grid > li {

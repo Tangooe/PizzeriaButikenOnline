@@ -46,24 +46,12 @@ namespace PizzeriaButikenOnline.Controllers
             return Ok();
         }
 
-        //public IActionResult ModifyCartLineIngredient(int lineId, int ingredientId)
-        //{
-        //    var line = _cart.Lines.FirstOrDefault(l => l.Id == lineId);
-        //    var ingredient = _context.Ingredients.Find(ingredientId);
+        //TODO: AJAX this 
+        public IActionResult AdjustQuantity(int lineId, int quantity)
+        {
+            _cart.AdjustQuantity(lineId, quantity);
 
-        //    if (line == null)
-        //        return BadRequest();
-
-        //    if (line.SelectedIngredients.Any(si => si == ingredient))
-        //    {
-        //        line.RemoveIngredient(ingredient);
-        //    }
-        //    else
-        //    {
-        //        line.AddIngredient(ingredient);
-        //    }
-
-        //    return Ok();
-        //}
+            return View(nameof(Index), new CartIndexViewModel {Cart = _cart});
+        }
     }
 }

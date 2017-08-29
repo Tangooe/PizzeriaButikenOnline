@@ -80,7 +80,7 @@ namespace PizzeriaButikenOnline.Data
 
                 context.Dishes.AddRange(new List<Dish>
                 {
-                    new Dish { Name = "Capprisiosa", CategoryId = 1, Price = 80m },
+                    new Dish { Name = "Capricciosa", CategoryId = 1, Price = 80m },
                     new Dish { Name = "Margherita", CategoryId = 1, Price = 70m },
                     new Dish { Name = "Al funghi", CategoryId = 1, Price = 75m },
                     new Dish { Name = "Vesuvio", CategoryId = 1, Price = 75m },

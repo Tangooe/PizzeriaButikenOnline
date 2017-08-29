@@ -1,4 +1,5 @@
-﻿@model CartIndexViewModel
+﻿@using System.Linq
+@model CartIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -6,52 +7,65 @@
 
 <h2>Din Kundvagn</h2>
 
-<table class="table table-bordered table-striped">
+<table class="table table-striped">
     <thead>
     <tr>
         <th>Antal</th>
         <th>Maträtt</th>
         <th class="text-right">Pris</th>
         <th class="text-right">Totalt</th>
-        <th>Hantera</th>
     </tr>
     </thead>
     <tbody>
     @foreach (var line in Model.Cart.Lines)
     {
         <tr>
-            <td class="text-center">
-                @line.Quantity
+            <td class="text-center">        
+                <a asp-action="AdjustQuantity" asp-route-lineId="@line.Id" asp-route-quantity="-1"><i class="quantity-button glyphicon glyphicon-minus"></i></a>
+                <b> @line.Quantity </b>
+                <a asp-action="AdjustQuantity" asp-route-lineId="@line.Id" asp-route-quantity="1"><i class="quantity-button glyphicon glyphicon-plus"></i></a>
             </td>
-            <td class="text-left">@line.Dish.Name</td>
-            <td class="text-right">@line.Dish.Price.ToString("c")</td>
-            <td class="text-right">@((line.Quantity * line.Dish.Price).ToString("c"))</td>
-            <td>
-                <form asp-action="RemoveFromCart" asp-route-dishId="@line.Dish.Id" method="post">
-                    <input asp-for="ReturnUrl" type="hidden" />
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Ta Bort
-                    </button>
-                </form>
+            <td class="text-left">
+                <div class="dish-name">
+                    <b>@line.Dish.Name </b><i class="small-font text-warning glyphicon glyphicon-pencil"></i>
+                </div>
+                <div>
+                    <a class="text-muted text-capitalize">
+                        @string.Join(", ", line.SelectedIngredients.Select(i => i.Name))
+                    </a>
+                </div>
+            </td>
+            <td class="text-right">@line.Dish.Price:-</td>
+            <td class="text-right">@(line.Quantity * line.Dish.Price):-</td>
+        </tr>
+    }
+    @for(var i = Model.Cart.Lines.Count(); i < 5; i++)
+    {
+        <tr>
+            <td colspan="5" class="cart-empty-row">
+                
             </td>
         </tr>
     }
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="3" class="text-right">Totalt:</td>
-        <td class="text-right">@Model.Cart.ComputeTotalValue().ToString("c")</td>
-        <td></td>
+        <td colspan="5" class="text-right">@Model.Cart.ComputeTotalValue():-</td>
     </tr>
     </tfoot>
 </table>
-
-<div class="text-right">
-    <a class="btn btn-primary" asp-action="Index" asp-controller="Home">Fortsätt att handla</a>
-    <form asp-action="Checkout" asp-controller="Order">
-        <button type="submit" class="btn btn-primary" >
-            Checkout
-        </button>
-    </form>
+<div class="row">
+    <div class="col-xs-6">
+        <a class=" btn btn-primary" asp-action="Index" asp-controller="Home"><i class="glyphicon glyphicon-arrow-left"></i> Fortsätt att handla</a>
+    </div>
+    <div class="text-right col-xs-6">
+        <form asp-action="Checkout" asp-controller="Order">
+            <button type="submit" class="btn btn-success" >
+                Checkout
+            </button>
+        </form>
+    </div>
 </div>
+
+
 

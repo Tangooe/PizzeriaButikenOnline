@@ -8,6 +8,15 @@ namespace PizzeriaButikenOnline.Models
     {
         private readonly List<CartLine> _lineCollection = new List<CartLine>();
 
+        public virtual void AdjustQuantity(int lineId , int quantity)
+        {
+            var line = _lineCollection.FirstOrDefault(lc => lc.Id == lineId);
+            line.Quantity += quantity;
+
+            if (line.Quantity <= 0)
+                RemoveLine(line.Id);
+        }
+
         public virtual void AddItem(Dish dish, int quantity, IList<IngredientViewModel> ingredients)
         {
             var line = _lineCollection.FirstOrDefault(lc =>

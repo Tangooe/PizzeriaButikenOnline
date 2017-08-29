@@ -33,6 +33,12 @@ namespace PizzeriaButikenOnline.Models
             Session.SetJson(nameof(Cart), this);
         }
 
+        public override void AdjustQuantity(int lineId, int quantity)
+        {
+            base.AdjustQuantity(lineId, quantity);
+            Session.SetJson(nameof(Cart), this);
+        }
+
         public override void Clear()
         {
             base.Clear();
