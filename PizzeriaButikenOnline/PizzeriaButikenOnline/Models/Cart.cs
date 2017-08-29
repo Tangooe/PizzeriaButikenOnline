@@ -27,6 +27,7 @@ namespace PizzeriaButikenOnline.Models
             {
                 _lineCollection.Add(new CartLine
                 {
+                    Id = _lineCollection.Count + 1,
                     Dish = dish,
                     Quantity = quantity,
                     SelectedIngredients = ingredients                     
