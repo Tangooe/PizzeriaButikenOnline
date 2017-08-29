@@ -1,5 +1,6 @@
 ﻿@using System
 @using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
 @model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -23,47 +24,15 @@
                 if (Model.ShowAdminActions)
                 {
                     <li>
-                        <div class="dish-manage">
-                            <a asp-controller="Dish" asp-action="Edit" asp-route-id="@dish.Id" class="text-warning">Edit</a>
-                            <span> | </span>
-                            <a asp-controller="Dish" asp-action="Delete" asp-route-id="@dish.Id" class="text-danger">Delete</a>
-                        </div>
+
                     </li>
                 }
                 <li>
-                    <a class="js-add-to-cart text-capitalize text-primary">
-                        <div class="dish-number">
-                            <p>@dishNumber.</p>
-                        </div>
-                        <div class="dish-details">
-                            <div class="dish-name">
-                                <span>@dish.Name</span>
-                            </div>
-                        </div>
-                        <div class="dish-price">
-                            @Math.Round(dish.Price,0):- <i class="text-success glyphicon glyphicon-shopping-cart"></i>
-                        </div>
-                    </a>
-                    @if (dish.Ingredients.Any())
-                    {
-                        <a class="accordion text-muted text-capitalize">
-                            <div class="dish-ingredients">
-                                @string.Join(", ", dish.Ingredients.Select(i => i.Name)) <i class="glyphicon glyphicon-edit"></i>
-                            </div>
-                        </a>
-                    }
-                   
                     @{
+                        dish.DishNumber = dishNumber;
+                        @Html.Partial("MenuItemSummary", dish)
                         dishNumber++;
                     }
-                    <div class="accordion-panel">
-                        @foreach (var ingredient in Model.AllIngredients.OrderBy(x => x.Name))
-                        {
-                            var buttonType = dish.Ingredients.Any(i => i.Name == ingredient.Name) ? "btn-success" : "btn-default";
-                            <button class="js-toggle-ingredient btn btn-sm @buttonType">@ingredient.Name</button>
-
-                        }
-                    </div>
                 </li>
             }
         </ul>
@@ -73,39 +42,7 @@
 
 @section Scripts {
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
-    <script>
-        $(document).ready(function() {
-            $(".js-add-to-cart").click(function(e) {
-                $.post("/cart/addtocart", { DishId: 2, Quantity: 1, SelectedIngredients: [2, 3] })
-                    .done(function () {
-                        //Update the view component here
-                        location.reload();
-                    })
-                    .fail(function() {
-                        alert("Failed");
-                    });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $(".js-toggle-ingredient").click(function(e) {
-                var button = $(e.target);
-                $.post("/cart/addtocart",
-                        { DishId: button.attr('data-dish-id'), IngredientId: button.attr("data-ingredient-id") })
-                    .done(function() {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-success");
-                    })
-                    .fail(function() {
-                        button
-                            .toggleClass("btn-default")
-                            .toggleClass("btn-success");
-                    });
-            });
-        });
-    </script>
+    
     <script>
         var acc = document.getElementsByClassName("accordion");
         var i;

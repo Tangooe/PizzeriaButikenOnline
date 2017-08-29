@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using PizzeriaButikenOnline.Data;
-using PizzeriaButikenOnline.Dtos;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.ViewModels;
 using System.Linq;
@@ -19,26 +17,25 @@ namespace PizzeriaButikenOnline.Controllers
             _cart = cart;
         }
 
-        public IActionResult Index(string returnUrl)
+        public IActionResult Index()
         {
             return View(new CartIndexViewModel
             {
-                Cart = _cart,
-                ReturnUrl = returnUrl
+                Cart = _cart
             });
         }
 
         [HttpPost]
-        public IActionResult AddToCart(AddToCartDto dto)
+        public IActionResult AddToCart(DishViewModel viewModel)
         {
-            var dish = _context.Dishes.Find(dto.DishId);
+            var dish = _context.Dishes.Find(viewModel.Id);
 
             if (dish == null)
                 return BadRequest();
 
-            _cart.AddItem(dish, dto.Quantity, _context.Ingredients.Where(i => dto.SelectedIngredients.Any(si => si == i.Id)).Distinct().ToList());
+            _cart.AddItem(dish, 1, viewModel.Ingredients.Where(i => i.IsSelected).ToList());
 
-            return Ok();
+            return PartialView(@"Components/CartSummary/Default", _cart);
         }
 
         [HttpPost]
@@ -49,24 +46,24 @@ namespace PizzeriaButikenOnline.Controllers
             return Ok();
         }
 
-        public IActionResult ModifyCartLineIngredient(int lineId, int ingredientId)
-        {
-            var line = _cart.Lines.FirstOrDefault(l => l.Id == lineId);
-            var ingredient = _context.Ingredients.Find(ingredientId);
+        //public IActionResult ModifyCartLineIngredient(int lineId, int ingredientId)
+        //{
+        //    var line = _cart.Lines.FirstOrDefault(l => l.Id == lineId);
+        //    var ingredient = _context.Ingredients.Find(ingredientId);
 
-            if (line == null)
-                return BadRequest();
+        //    if (line == null)
+        //        return BadRequest();
 
-            if (line.SelectedIngredients.Any(si => si == ingredient))
-            {
-                line.RemoveIngredient(ingredient);
-            }
-            else
-            {
-                line.AddIngredient(ingredient);
-            }
+        //    if (line.SelectedIngredients.Any(si => si == ingredient))
+        //    {
+        //        line.RemoveIngredient(ingredient);
+        //    }
+        //    else
+        //    {
+        //        line.AddIngredient(ingredient);
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

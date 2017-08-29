@@ -35,14 +35,6 @@ span.field-validation-error {
     margin: 15px;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-}
-
 .dish-category {
     color: red;
     font-family: 'Lobster', cursive;
@@ -68,7 +60,7 @@ span.field-validation-error {
     list-style: none;
 }
 
-.menu > li {
+.menu > li .dish-details {
     position: relative;
 }
 
@@ -81,32 +73,32 @@ span.field-validation-error {
     text-align: right;
 }
 
-.menu > li .dish-details {
-    position: absolute;
-    top: 0px;
-    left: 40px;
+.menu > li .dish-name {
+    margin-left: 40px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.menu > li .dish-name:hover {
+    cursor: default;
 }
 
 .menu > li .dish-manage {
-    margin-bottom: -10px;
-    margin-left: 40px;
+    position: absolute;
+    top: 9px;
+    right: 100px;
     font-weight: bold;
+}
+
+
+.menu > li .dish-price {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .menu-category {
     text-align: center;
-}
-
-.dish-name {
-    font-weight: bold;
-    font-size: 22px;
-}
-.dish-name:hover {
-    text-decoration: underline;
-}
-
-.menu > li .dish-price {
-    text-align: right;
 }
 
 .menu > li > a {
@@ -121,16 +113,10 @@ a.accordion {
 
 .accordion-panel {
     margin-top: 10px;
-    padding: 0 40px;
     background-color: white;
-    max-height: 0;
     overflow: hidden;
+    max-height: 0;
     transition: max-height 0.2s ease-out;
-}
-
-
-.menu > li > a:hover {
-    color: #000;
 }
 
 .ingredients {
@@ -157,5 +143,24 @@ input[type=checkbox] {
 }
 
 .cart-icon {
+    margin-top: 15px;
     color: #ffffff;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 1200px) {
+    .checkbox-grid > li {
+        width: 25%;
+    }
+}
+@media screen and (max-width: 992px) {
+    .checkbox-grid > li {
+        width: 33%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .checkbox-grid > li {
+        width: 50%;
+    }
 }

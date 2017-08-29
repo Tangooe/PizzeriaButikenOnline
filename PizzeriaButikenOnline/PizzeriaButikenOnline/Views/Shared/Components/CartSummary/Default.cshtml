@@ -1,9 +1,7 @@
 ﻿@using System.Linq
-@using Microsoft.AspNetCore.Http.Extensions
-@using PizzeriaButikenOnline.Extensions
 @model Cart
 <div id="cartdiv">
-    <a asp-controller="Cart" asp-action="Index" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+    <a asp-controller="Cart" asp-action="Index">
         <i class="cart-icon glyphicon glyphicon-shopping-cart"></i>
         @if (Model.Lines.Any())
         {

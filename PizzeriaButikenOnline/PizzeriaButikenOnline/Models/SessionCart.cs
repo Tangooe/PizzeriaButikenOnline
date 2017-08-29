@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PizzeriaButikenOnline.Extensions;
+using PizzeriaButikenOnline.ViewModels;
 using System;
 using System.Collections.Generic;
 
@@ -20,7 +21,7 @@ namespace PizzeriaButikenOnline.Models
         [JsonIgnore]
         public ISession Session { get; private set; }
 
-        public override void AddItem(Dish dish, int quantity, IList<Ingredient> ingredients)
+        public override void AddItem(Dish dish, int quantity, IList<IngredientViewModel> ingredients)
         {
             base.AddItem(dish, quantity, ingredients);
             Session.SetJson(nameof(Cart), this);

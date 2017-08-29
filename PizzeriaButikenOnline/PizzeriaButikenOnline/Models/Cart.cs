@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PizzeriaButikenOnline.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Models
@@ -7,11 +8,8 @@ namespace PizzeriaButikenOnline.Models
     {
         private readonly List<CartLine> _lineCollection = new List<CartLine>();
 
-        public virtual void AddItem(Dish dish, int quantity, IList<Ingredient> ingredients)
+        public virtual void AddItem(Dish dish, int quantity, IList<IngredientViewModel> ingredients)
         {
-            if (!ingredients.Any())
-                ingredients = dish.DishIngredients.Select(di => di.Ingredient).ToList();
-
             var line = _lineCollection.FirstOrDefault(lc =>
                 lc.Dish.Id == dish.Id &&
                 lc.SelectedIngredients.Select(si => si.Id).SequenceEqual(ingredients.Select(i => i.Id)));

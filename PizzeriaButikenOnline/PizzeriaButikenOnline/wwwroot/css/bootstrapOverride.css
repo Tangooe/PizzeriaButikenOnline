@@ -78,9 +78,20 @@ body {
     border-radius: 9px;
 }
 
+.btn-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: #393939;
+}
+
+.btn-link:focus, .btn-link:active:focus, .btn-link.active:focus, .btn-link.focus, .btn-link:active.focus, .btn-link.active.focus {
+    outline: none;
+    color: #393939;
+}
+
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-    border-top: none;
-    padding: 2px;
+border-top: none;
+padding: 2px;
 }
 
 .glyphicon-shopping-cart {

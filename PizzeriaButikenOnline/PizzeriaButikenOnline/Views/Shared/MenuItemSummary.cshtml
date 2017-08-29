@@ -1,49 +1,49 @@
-﻿@using System.Linq
+﻿@using System
+@using System.Linq
 @using Microsoft.AspNetCore.Mvc.Rendering
-@using PizzeriaButikenOnline.Extensions
 @model DishViewModel
     
-<a data-dish-id="@Model.Id" class="js-add-to-cart text-capitalize text-primary">
-    <div class="dish-number">
-        <p>@Model.DishNumber.</p>
-    </div>
+<form  id="@Model.Id" asp-action="AddToCart" asp-controller="Cart"  data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cartdiv">
+    @Html.HiddenFor(x => x.Id)
     <div class="dish-details">
+        <div class="dish-number">
+            <p>@Model.DishNumber.</p>
+        </div>
         <div class="dish-name">
             <span>@Model.Name</span>
         </div>
-        @if (Model.Ingredients.Any())
+        <div class="dish-manage">
+            <a asp-controller="Dish" asp-action="Edit" asp-route-id="@Model.Id" class="text-warning">Edit</a>
+            <span> | </span>
+            <a asp-controller="Dish" asp-action="Delete" asp-route-id="@Model.Id" class="text-danger">Delete</a>
+        </div>
+        <div class="dish-price">
+            <button type="submit" class="btn btn-link">
+                <span>@Math.Round(Model.Price,0):- <i class="text-success glyphicon glyphicon-shopping-cart"></i></span>
+            </button>
+        </div>
+        @if (Model.Ingredients.Any(x => x.IsSelected))
         {
             <div class="dish-ingredients">
-                @string.Join(", ", Model.Ingredients.Select(i => i.Name))
+                <a class="accordion text-muted text-capitalize">
+                    @string.Join(", ", Model.Ingredients.Where(i => i.IsSelected).Select(i => i.Name)) <i class="glyphicon glyphicon-edit"></i>
+                </a>
+                <div class="accordion-panel">
+                    <div class="form-group">
+                        <ul class="checkbox-grid">
+                            @for (var i = 0; i < Model.Ingredients.Count; i++)
+                            {
+                                <li>
+                                    <input asp-for="@Model.Ingredients[i].IsSelected" type="checkbox"/>
+                                    <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name</label>
+                                    @Html.HiddenFor(x => Model.Ingredients[i].Id)
+                                    @Html.HiddenFor(x => Model.Ingredients[i].Name)
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
         }
     </div>
-    <div class="dish-price">
-        @Model.Price:- <i class="text-success glyphicon glyphicon-shopping-cart"></i>
-    </div>
-</a>
-@if (Model.ShowAdminActions)
-{
-    <div class="dish-manage">
-        <a class="text-warning" href="#">Edit</a>
-        <span> | </span>
-        <a class="text-danger" href="#">Delete</a>
-    </div>
-}
-
-@section Scripts {
-    <script>
-        $(docuemnt).ready(function() {
-            $(".js-add-to-cart").click(function(e) {
-                    var button = $(e.target);
-                    $.post("/cart/addtocart", { dishId: button.attr("data-dish-id") })
-                        .done(function() {
-                            
-                        })
-                        .fail(function() {
-                            alert("something failed");
-                        });
-            });
-        });
-    </script>
-}
+</form>
