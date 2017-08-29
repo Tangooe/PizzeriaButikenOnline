@@ -137,12 +137,15 @@ a.accordion {
     margin-top: 30px;
 }
 
+.checkbox-grid {
+    display: flow-root;
+    padding: 0 2px;
+}
+
 .checkbox-grid > li {
     display: block;
     float: left;
-    width: 25%;
-    margin-left: -37px;
-    margin-right: 10px;
+    width: 20%;
 }
 
 input[type=checkbox] {
