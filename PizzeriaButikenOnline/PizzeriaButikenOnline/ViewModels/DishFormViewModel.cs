@@ -24,8 +24,6 @@ namespace PizzeriaButikenOnline.ViewModels
         public IList<Category> Categories { get; set; }
 
         [DisplayName("Ingridienser")]
-        public IList<Ingredient> SelectedIngredients { get; set; }
-
-        public IList<Ingredient> AllIngredients { get; set; }
+        public IList<IngredientViewModel> Ingredients { get; set; }
     }
 }

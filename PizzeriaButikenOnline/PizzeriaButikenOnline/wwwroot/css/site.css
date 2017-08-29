@@ -88,9 +88,8 @@ span.field-validation-error {
 }
 
 .menu > li .dish-manage {
-    margin-top: -25px;
-    margin-right: 80px;
-    float: right;
+    margin-bottom: -10px;
+    margin-left: 40px;
     font-weight: bold;
 }
 

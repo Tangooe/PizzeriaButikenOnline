@@ -30,11 +30,16 @@
                 </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <div>
-                <label asp-for="AllIngredients"></label><br/>
-                @foreach (var ingredient in Model.AllIngredients.OrderBy(x => x.Name))
+            <div class="form-group">
+                <label asp-for="Ingredients"></label><br/>
+                @for (var i = 0; i < Model.Ingredients.Count; i++)
                 {
-                    <div class="btn btn-default btn-sm">@ingredient.Name</div>
+                    <div style="display:inline;margin-right:5px;">
+                        <input asp-for="@Model.Ingredients[i].IsSelected" type="checkbox" />
+                        <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name</label>
+                        @Html.HiddenFor(x => Model.Ingredients[i].Id)
+                        @Html.HiddenFor(x => Model.Ingredients[i].Name)
+                    </div>
                 }
             </div>
             <br/>

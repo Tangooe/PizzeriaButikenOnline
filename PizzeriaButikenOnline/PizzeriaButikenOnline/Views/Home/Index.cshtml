@@ -1,4 +1,5 @@
-﻿@using System.Linq
+﻿@using System
+@using System.Linq
 @model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -19,6 +20,16 @@
         <ul class="menu">
             @foreach (var dish in category)
             {
+                if (Model.ShowAdminActions)
+                {
+                    <li>
+                        <div class="dish-manage">
+                            <a asp-controller="Dish" asp-action="Edit" asp-route-id="@dish.Id" class="text-warning">Edit</a>
+                            <span> | </span>
+                            <a asp-controller="Dish" asp-action="Delete" asp-route-id="@dish.Id" class="text-danger">Delete</a>
+                        </div>
+                    </li>
+                }
                 <li>
                     <a class="js-add-to-cart text-capitalize text-primary">
                         <div class="dish-number">
@@ -30,7 +41,7 @@
                             </div>
                         </div>
                         <div class="dish-price">
-                            @dish.Price:- <i class="text-success glyphicon glyphicon-shopping-cart"></i>
+                            @Math.Round(dish.Price,0):- <i class="text-success glyphicon glyphicon-shopping-cart"></i>
                         </div>
                     </a>
                     @if (dish.Ingredients.Any())
@@ -41,15 +52,7 @@
                             </div>
                         </a>
                     }
-                    @if (Model.ShowAdminActions)
-                    {
-                        <div class="dish-manage">
-                            <a class="text-warning" href="#">Edit</a>
-                            <span> | </span>
-                            <a class="text-danger" href="#">Delete</a>
-                        </div>
-                    }
-
+                   
                     @{
                         dishNumber++;
                     }

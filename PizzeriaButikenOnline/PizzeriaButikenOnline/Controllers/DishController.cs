@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.ViewModels;
@@ -18,15 +19,6 @@ namespace PizzeriaButikenOnline.Controllers
         {
             _context = context;
         }
-
-        public ActionResult Index()
-        {
-            return View(_context.Dishes
-                .Include(d => d.Category)
-                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
-                .ToList());
-        }
-
 
         public ActionResult Details(int id)
         {
@@ -47,8 +39,14 @@ namespace PizzeriaButikenOnline.Controllers
             var viewModel = new DishFormViewModel
             {
                 Categories = _context.Categories.ToList(),
-                AllIngredients = _context.Ingredients.ToList()
-            };
+                Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Price = i.Price,
+                    IsSelected = false
+                }).ToList()
+        };
 
             return View(viewModel);
         }
@@ -59,7 +57,14 @@ namespace PizzeriaButikenOnline.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.AllIngredients = _context.Ingredients.ToList();
+                viewModel.Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Price = i.Price,
+                    IsSelected = false
+                }).ToList();
+
                 viewModel.Categories = _context.Categories.ToList();
                 return View(nameof(Create), viewModel);
             }
@@ -74,9 +79,9 @@ namespace PizzeriaButikenOnline.Controllers
                 };
                 _context.Dishes.Add(dish);
 
-                if (viewModel.SelectedIngredients != null)
+                if (viewModel.Ingredients.Any(i => i.IsSelected))
                 {
-                    _context.DishIngredients.AddRange(viewModel.SelectedIngredients.Select(i => new DishIngredient
+                    _context.DishIngredients.AddRange(viewModel.Ingredients.Where(I => I.IsSelected).Select(i => new DishIngredient
                     {
                         Dish = dish,
                         IngredientId = i.Id
@@ -88,7 +93,14 @@ namespace PizzeriaButikenOnline.Controllers
             }
             catch
             {
-                viewModel.AllIngredients = _context.Ingredients.ToList();
+                viewModel.Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Price = i.Price,
+                    IsSelected = false
+                }).ToList();
+
                 viewModel.Categories = _context.Categories.ToList();
                 return View(nameof(Create), viewModel);
             }
