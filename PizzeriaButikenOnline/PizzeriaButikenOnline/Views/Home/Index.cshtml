@@ -21,15 +21,10 @@
         <ul class="menu">
             @foreach (var dish in category)
             {
-                if (Model.ShowAdminActions)
-                {
-                    <li>
-
-                    </li>
-                }
                 <li>
                     @{
                         dish.DishNumber = dishNumber;
+                        dish.ShowAdminActions = Model.ShowAdminActions;
                         @Html.Partial("MenuItemSummary", dish)
                         dishNumber++;
                     }

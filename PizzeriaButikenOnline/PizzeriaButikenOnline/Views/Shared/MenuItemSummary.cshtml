@@ -12,11 +12,14 @@
         <div class="dish-name">
             <span>@Model.Name</span>
         </div>
-        <div class="dish-manage">
-            <a asp-controller="Dish" asp-action="Edit" asp-route-id="@Model.Id" class="text-warning">Edit</a>
-            <span> | </span>
-            <a asp-controller="Dish" asp-action="Delete" asp-route-id="@Model.Id" class="text-danger">Delete</a>
-        </div>
+        @if (Model.ShowAdminActions)
+        {
+            <div class="dish-manage">
+                <a asp-controller="Dish" asp-action="Edit" asp-route-id="@Model.Id" class="text-warning">Edit</a>
+                <span> | </span>
+                <a asp-controller="Dish" asp-action="Delete" asp-route-id="@Model.Id" class="text-danger">Delete</a>
+            </div>
+        }
         <div class="dish-price">
             <button type="submit" class="btn btn-link">
                 <span>@Math.Round(Model.Price,0):- <i class="text-success glyphicon glyphicon-shopping-cart"></i></span>
