@@ -90,7 +90,12 @@
         <div id="js-empty-categories">
             @foreach (var category in Model.AllCategories.Where(c => c.Dishes.Count == 0))
             {
-                <h2 class="dish-category">@category.Name</h2>
+                <div>
+                    <h2 class="dish-category">@category.Name             
+                        <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="small-font text-warning glyphicon glyphicon-pencil"></a>
+                        <a asp-controller="Category" asp-action="Delete"  asp-route-id="@category.Id" class="small-font text-danger glyphicon glyphicon-remove"></a>
+                    </h2>
+                </div>
             }
         </div>
         }

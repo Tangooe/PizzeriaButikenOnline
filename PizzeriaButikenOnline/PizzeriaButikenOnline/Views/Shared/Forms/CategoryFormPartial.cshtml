@@ -1,7 +1,7 @@
 ﻿@model CategoryFormViewModel
 <div class="row">
     <div>
-        <form asp-controller="Category" asp-action="Create">
+        <form asp-controller="Category" asp-action="@Model.Action">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
