@@ -66,6 +66,10 @@ body {
     box-shadow: none;
 }
 
+.modal-body {
+    padding: 10px 40px;
+}
+
 .navbar-inverse .navbar-nav > .dropdown > a .caret {
     border-top-color: #fff;
     border-bottom-color: #fff;
@@ -99,6 +103,11 @@ body {
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
 border-top: none;
 padding: 2px;
+}
+
+.checkbox {
+    margin-top: 0px;
+    margin-left: 2px;
 }
 
 .glyphicon-shopping-cart {

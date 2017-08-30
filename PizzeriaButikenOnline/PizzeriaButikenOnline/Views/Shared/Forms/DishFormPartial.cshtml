@@ -1,0 +1,49 @@
+﻿@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model DishFormViewModel
+
+@{
+    var categories = new SelectList(Model.Categories, "Id", "Name");
+}
+
+<div class="row">
+    <div>
+        <form asp-controller="Dish" asp-action="@Model.Action">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="eg Caprissiosa" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control" asp-items="categories">
+                    <option selected="selected"></option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ingredients"></label><br/>
+                <ul class="checkbox-grid">
+                    @for (var i = 0; i < Model.Ingredients.Count; i++)
+                    {
+                        <li>
+                            <input asp-for="@Model.Ingredients[i].IsSelected" type="checkbox"/>
+                            <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name</label>
+                            @Html.HiddenFor(x => Model.Ingredients[i].Id)
+                            @Html.HiddenFor(x => Model.Ingredients[i].Name)
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Spara</button>
+            </div>
+        </form>
+    </div>
+</div>

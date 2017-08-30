@@ -1,0 +1,16 @@
+﻿@model CategoryFormViewModel
+<div class="row">
+    <div>
+        <form asp-controller="Category" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="eg Caprissiosa" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Spara</button>
+            </div>
+        </form>
+    </div>
+</div>

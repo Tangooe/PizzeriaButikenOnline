@@ -9,6 +9,9 @@ namespace PizzeriaButikenOnline.Data
     {
         public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            if(!context.Database.EnsureCreated())
+                return;
+
             if(!context.Ingredients.Any())
             {
                 #region Add Categories
@@ -18,7 +21,9 @@ namespace PizzeriaButikenOnline.Data
                     new Category {Name = "Italienska Pizzor"},
                     new Category {Name = "Specialpizzor"},
                     new Category {Name = "Mexikanska pizzor"},
-                    new Category {Name = "Drycker"}
+                    new Category {Name = "Drycker"},
+                    new Category {Name = "Sallader"},
+                    new Category {Name = "Såser"}
                 });
 
                 #endregion

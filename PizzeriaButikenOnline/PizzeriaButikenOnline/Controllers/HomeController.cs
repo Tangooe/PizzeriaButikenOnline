@@ -35,13 +35,20 @@ namespace PizzeriaButikenOnline.Controllers
                         Name = i.Name,
                         Price = i.Price,
                         IsSelected = dish.DishIngredients.Any(di => di.IngredientId == i.Id)
-                    }).ToList()
-                }).ToList();
+                    }).OrderBy(i => i.Name).ToList()
+            }).ToList();
 
-            var viewModel = new HomeViewModel
+            var viewModel = new MenuViewModel
             {
-                Menu = dishViewModels,
-                AllIngredients = _context.Ingredients.ToList(),
+                Dishes = dishViewModels,
+                AllIngredients = _context.Ingredients.Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Price = i.Price,
+                    IsSelected = false
+                }).OrderBy(i => i.Name).ToList(),
+                AllCategories =  _context.Categories.Include(c => c.Dishes).ToList(),
                 ShowAdminActions = User.IsInRole("Admin")
             };
 

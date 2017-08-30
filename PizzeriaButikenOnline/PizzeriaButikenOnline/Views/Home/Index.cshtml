@@ -1,7 +1,7 @@
 ﻿@using System
 @using System.Linq
 @using Microsoft.AspNetCore.Mvc.Rendering
-@model HomeViewModel
+@model MenuViewModel
 @{
     ViewData["Title"] = "Home Page";
     var dishNumber = 1;
@@ -12,12 +12,65 @@
     @if (Model.ShowAdminActions)
     {
         <div>
-            <a class="text-primary" asp-area="" asp-controller="Dish" asp-action="Create"><i class="text-success glyphicon glyphicon-plus"></i> Lägg till Maträtt</a>
+            <a class="text-primary" data-toggle="modal" data-target=".create-dish-modal"><i class="text-success glyphicon glyphicon-plus"></i> Lägg till ny Maträtt</a><br/>
+            <div class="modal fade create-dish-modal" tabindex="-1" role="dialog" aria-labelledby="Lägg till ny Maträtt">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="create-dish-modal-label">Lägg till ny Maträtt</h4>
+                        </div>
+                        <div class="modal-body">
+                            @await Html.PartialAsync("Forms/DishFormPartial", new DishFormViewModel
+                            {
+                                Categories = Model.AllCategories.ToList(),
+                                Ingredients = Model.AllIngredients.ToList()
+                            })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="text-primary" data-toggle="modal" data-target=".create-category-modal"><i class="text-success glyphicon glyphicon-plus"></i> Lägg till ny Kategori</a><br/>
+            <div class="modal fade create-category-modal" tabindex="-1" role="dialog" aria-labelledby="Lägg till ny Kategori">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="create-dish-modal-label">Lägg till ny Kategori</h4>
+                        </div>
+                        <div class="modal-body">
+                            @await Html.PartialAsync("Forms/CategoryFormPartial", new CategoryFormViewModel())
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="text-primary" data-toggle="modal" data-target=".create-ingredient-modal"><i class="text-success glyphicon glyphicon-plus"></i> Lägg till ny Ingrediens</a> 
+            <div class="modal fade create-ingredient-modal" tabindex="-1" role="dialog" aria-labelledby="Lägg till ny Ingrediens">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="create-dish-modal-label">Lägg till ny Ingrediens</h4>
+                        </div>
+                        <div class="modal-body">
+                            @await Html.PartialAsync("Forms/IngredientFormPartial", new IngredientFormViewModel())
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="checkbox">
+            <label><input type="checkbox" class="js-toggle-empty-categories" /> Visa tomma kategorier</label>
         </div>
     }
-    @foreach (var category in Model.Menu.GroupBy(d => d.Category).ToList())
+    @foreach (var category in Model.Dishes.GroupBy(d => d.Category).ToList())
     {
-        <h2 class="dish-category">@category.Key.Name</h2>
+        <div>
+            <h2 class="dish-category">@category.Key.Name             
+                <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Key.Id" class="small-font text-warning glyphicon glyphicon-pencil"></a>
+                <a asp-controller="Category" asp-action="Delete"  asp-route-id="@category.Key.Id" class="small-font text-danger glyphicon glyphicon-remove"></a>
+            </h2>
+        </div>
         <ul class="menu">
             @foreach (var dish in category)
             {
@@ -32,6 +85,15 @@
             }
         </ul>
     }
+    @if(Model.ShowAdminActions)
+    { 
+        <div id="js-empty-categories">
+            @foreach (var category in Model.AllCategories.Where(c => c.Dishes.Count == 0))
+            {
+                <h2 class="dish-category">@category.Name</h2>
+            }
+        </div>
+        }
 </div>
 
 
@@ -53,5 +115,16 @@
                 }
             }
         }
+
+        $(function () {
+            $('.js-toggle-empty-categories').change(function () {                
+                $('#js-empty-categories').toggle(this.checked);
+            }).change();
+        });
     </script>
+    
+    @if (Model.ShowAdminActions)
+    {
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

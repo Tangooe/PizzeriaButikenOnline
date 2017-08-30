@@ -29,7 +29,7 @@
         {
             <div class="dish-ingredients">
                 <a class="accordion text-muted text-capitalize">
-                    @string.Join(", ", Model.Ingredients.Where(i => i.IsSelected).Select(i => i.Name)) <i class="glyphicon glyphicon-edit"></i>
+                    @string.Join(", ", Model.Ingredients.Where(i => i.IsSelected).Select(i => i.Name)) <i class="small-font glyphicon glyphicon-pencil"></i>
                 </a>
                 <div class="accordion-panel">
                     <div class="form-group">
@@ -39,6 +39,11 @@
                                 <li>
                                     <input asp-for="@Model.Ingredients[i].IsSelected" type="checkbox"/>
                                     <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name</label>
+                                    @if (Model.ShowAdminActions)
+                                    {
+                                        <i class="text-danger glyphicon glyphicon-remove"></i>
+                                    }
+
                                     @Html.HiddenFor(x => Model.Ingredients[i].Id)
                                     @Html.HiddenFor(x => Model.Ingredients[i].Name)
                                 </li>

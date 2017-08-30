@@ -1,4 +1,5 @@
-﻿using PizzeriaButikenOnline.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using PizzeriaButikenOnline.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,12 @@ namespace PizzeriaButikenOnline.ViewModels
 {
     public class DishFormViewModel
     {
+        [HiddenInput]
+        public string Action { get; set; }
+
+        [HiddenInput]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Namnet måste vara ifyllt")]
         [StringLength(50, ErrorMessage = "Namnet får inte vara längre än 50 bokstäver")]
         [DisplayName("Namn")]
