@@ -41,7 +41,7 @@
                                     <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name</label>
                                     @if (Model.ShowAdminActions)
                                     {
-                                        <i class="text-danger glyphicon glyphicon-remove"></i>
+                                        <a asp-controller="Ingredient" asp-action="Delete" asp-route-id="@Model.Ingredients[i].Id" class="text-danger glyphicon glyphicon-remove"></a>
                                     }
 
                                     @Html.HiddenFor(x => Model.Ingredients[i].Id)
