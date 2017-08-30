@@ -15,10 +15,36 @@ namespace PizzeriaButikenOnline.Data
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDish> OrderDishes { get; set; }
+        public DbSet<OrderDishIngredient> OrderDishIngredients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<OrderDish>()
+                .HasOne(od => od.Dish)
+                .WithMany(d => d.OrderDishes)
+                .HasForeignKey(od => od.DishId);
+
+            builder.Entity<OrderDish>()
+                .HasOne(od => od.Order)
+                .WithMany(o => o.OrderDishes)
+                .HasForeignKey(od => od.OrderId);
+
+            builder.Entity<OrderDishIngredient>()
+                .HasKey(odi => new {odi.IngredientId, odi.OrderDishId});
+
+            builder.Entity<OrderDishIngredient>()
+                .HasOne(odi => odi.Ingredient)
+                .WithMany(i => i.OrderDishIngredients)
+                .HasForeignKey(odi => odi.IngredientId);
+
+            builder.Entity<OrderDishIngredient>()
+                .HasOne(odi => odi.OrderDish)
+                .WithMany(od => od.OrderDishIngredients)
+                .HasForeignKey(odi => odi.OrderDishId);
 
             builder.Entity<DishIngredient>()
                 .HasKey(di => new { di.DishId, di.IngredientId });

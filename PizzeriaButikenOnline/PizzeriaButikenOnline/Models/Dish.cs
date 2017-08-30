@@ -22,5 +22,6 @@ namespace PizzeriaButikenOnline.Models
         public Category Category { get; set; }
 
         public ICollection<DishIngredient> DishIngredients { get; set; }
+        public ICollection<OrderDish> OrderDishes { get; set; }
     }
 }

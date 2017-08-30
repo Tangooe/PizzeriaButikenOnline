@@ -1,0 +1,13 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "CheckoutCompleted";
+}
+
+<h2>CheckoutCompleted</h2>
+
+@Model.DateTime
+
+@foreach (var item in Model.OrderDishes)
+{
+    @item.Dish.Name
+}

@@ -17,5 +17,6 @@ namespace PizzeriaButikenOnline.Models
         public decimal Price { get; set; }
 
         public ICollection<DishIngredient> DishIngredients { get; set; }
+        public ICollection<OrderDishIngredient> OrderDishIngredients { get; set; }
     }
 }
