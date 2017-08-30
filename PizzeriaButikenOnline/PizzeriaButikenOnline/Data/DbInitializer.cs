@@ -208,7 +208,12 @@ namespace PizzeriaButikenOnline.Data
             var user = new ApplicationUser
             {
                 UserName = "Tangooe@user.com",
-                Email = "Tangooe@user.com"
+                Email = "Tangooe@user.com",
+                Name = "Emil Ekman",
+                PhoneNumber = "070 666 66 66",
+                StreetAddress = "Streetroad 1",
+                City = "Springfield",
+                ZipCode = 66666
             };
 
             userManager.CreateAsync(user, "Abc!23");
@@ -217,7 +222,12 @@ namespace PizzeriaButikenOnline.Data
             var admin = new ApplicationUser
             {
                 UserName = "Tangooe@admin.com",
-                Email = "Tangooe@admin.com"
+                Email = "Tangooe@admin.com",
+                Name = "Emil Ekman",
+                PhoneNumber = "070 666 66 66",
+                StreetAddress = "Streetroad 1",
+                City = "Springfield",
+                ZipCode = 66666
             };
 
             userManager.CreateAsync(admin, "Abc!23");
