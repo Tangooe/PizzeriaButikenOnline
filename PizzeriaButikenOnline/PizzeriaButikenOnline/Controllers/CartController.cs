@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.ViewModels;
@@ -10,18 +11,38 @@ namespace PizzeriaButikenOnline.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly Cart _cart;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ApplicationDbContext context, Cart cart)
+        public CartController(ApplicationDbContext context, Cart cart, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _cart = cart;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
+            var checkoutForm = new CheckoutFormViewModel();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
+
+                checkoutForm = new CheckoutFormViewModel
+                {
+                    Name = user.Name,
+                    StreetAddress = user.StreetAddress,
+                    City = user.City,
+                    ZipCode = user.ZipCode.ToString(),
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber
+                };
+            }
+
             return View(new CartIndexViewModel
             {
-                Cart = _cart
+                Cart = _cart,
+                CheckoutForm = checkoutForm
             });
         }
 
