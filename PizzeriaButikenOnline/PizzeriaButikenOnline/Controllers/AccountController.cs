@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PizzeriaButikenOnline.Extensions;
 using PizzeriaButikenOnline.Models;
-using PizzeriaButikenOnline.Models.AccountViewModels;
 using PizzeriaButikenOnline.Services;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using PizzeriaButikenOnline.ViewModels.AccountViewModels;
 
 namespace PizzeriaButikenOnline.Controllers
 {

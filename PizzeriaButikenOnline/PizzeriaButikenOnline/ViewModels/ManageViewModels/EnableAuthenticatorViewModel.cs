@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PizzeriaButikenOnline.Models.ManageViewModels
+namespace PizzeriaButikenOnline.ViewModels.ManageViewModels
 {
     public class EnableAuthenticatorViewModel
     {

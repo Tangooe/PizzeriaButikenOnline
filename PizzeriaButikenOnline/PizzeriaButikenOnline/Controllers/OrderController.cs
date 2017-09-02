@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.ViewModels;
 using System;
 using System.Linq;
 
@@ -23,15 +24,31 @@ namespace PizzeriaButikenOnline.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Checkout()
+        public IActionResult Checkout(CheckoutFormViewModel viewModel)
         {
+            if (!ModelState.IsValid && !viewModel.Delivery)
+                return RedirectToAction("Index", "Cart");
+
             var order = new Order
             {
                 DateTime = DateTime.Now,
-                UserId = _userManager.GetUserId(User),
                 Active = true,
                 OrderToken = new Guid().ToString(),
             };
+
+            if (User.Identity.IsAuthenticated)
+                order.UserId = _userManager.GetUserId(User);
+            else
+                order.AnonymousUserInformation = new AnonymousUserInformation
+                {
+                    Name = viewModel.Name,
+                    StreetAddress = viewModel.StreetAddress,
+                    ZipCode = viewModel.ZipCode,
+                    City = viewModel.City,
+                    PhoneNumber = viewModel.PhoneNumber,
+                    Email = viewModel.Email,
+                    PaymentMethod = viewModel.PaymentMenthods.First(pm => pm.Id == viewModel.PaymentMethod).Name
+                };
 
             _context.Orders.Add(order);
             _context.SaveChanges();

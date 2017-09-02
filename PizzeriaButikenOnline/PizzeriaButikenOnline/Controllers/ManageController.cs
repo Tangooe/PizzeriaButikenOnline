@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PizzeriaButikenOnline.Models;
-using PizzeriaButikenOnline.Models.ManageViewModels;
 using PizzeriaButikenOnline.Services;
 using System;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using PizzeriaButikenOnline.ViewModels.ManageViewModels;
 
 namespace PizzeriaButikenOnline.Controllers
 {

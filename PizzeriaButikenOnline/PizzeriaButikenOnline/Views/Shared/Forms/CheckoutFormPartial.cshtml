@@ -1,0 +1,80 @@
+﻿@model CheckoutFormViewModel
+
+<form asp-controller="Order" asp-action="Checkout">
+    <div>
+        <label>Avhämtning
+            <input asp-for="Delivery" value="false" type="radio" id="pickup" data-toggle="collapse" data-target=".collapseOne.in" checked/>
+        </label>
+    </div>
+    <div>
+        <label>Utkörning
+            <input asp-for="Delivery" value="true" type="radio" id="delivery" data-toggle="collapse" data-target=".collapseOne:not(.in)"/>
+        </label>
+    </div> 
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default panel-collapse collapse collapseOne">
+            <div class="panel-heading">
+                <h3>
+                    Leveransuppgifter
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StreetAddress" class="control-label"></label>
+                    <input asp-for="StreetAddress" class="form-control" />
+                    <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ZipCode" class="control-label"></label>
+                    <input asp-for="ZipCode" class="form-control" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default panel-collapse collapse collapseOne">
+            <div class="panel-heading">
+                <h3>
+                    Betalningssätt
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    @foreach (var paymentMethod in Model.PaymentMenthods)
+                    {
+                        <div>
+                            <label>
+                                <input asp-for="PaymentMethod" type="radio" value="@paymentMethod.Id" />
+                                @paymentMethod.Name
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-lg btn-success">Beställ</button>
+    </div>
+</form>

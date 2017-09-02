@@ -1,6 +1,4 @@
-using System;
-
-namespace PizzeriaButikenOnline.Models
+namespace PizzeriaButikenOnline.ViewModels
 {
     public class ErrorViewModel
     {

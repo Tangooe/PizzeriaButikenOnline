@@ -10,6 +10,7 @@ namespace PizzeriaButikenOnline.Models
         public bool Active { get; set; }
         public string OrderToken { get; set; }
         public string UserId { get; set; }
+        public AnonymousUserInformation AnonymousUserInformation { get; set; }
 
         public ICollection<OrderDish> OrderDishes { get; set; }
     }

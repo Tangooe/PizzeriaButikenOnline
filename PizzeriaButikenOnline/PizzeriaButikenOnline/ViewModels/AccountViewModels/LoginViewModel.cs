@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PizzeriaButikenOnline.Models.AccountViewModels
+namespace PizzeriaButikenOnline.ViewModels.AccountViewModels
 {
     public class LoginViewModel
     {

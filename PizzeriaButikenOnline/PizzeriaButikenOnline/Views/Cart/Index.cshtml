@@ -1,4 +1,5 @@
 ﻿@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
 @model CartIndexViewModel
 
 @{
@@ -50,22 +51,11 @@
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="5" class="text-right">@Model.Cart.ComputeTotalValue():-</td>
+        <td colspan="1"><a class=" btn btn-primary" asp-action="Index" asp-controller="Home"><i class="glyphicon glyphicon-arrow-left"></i> Fortsätt att handla</a></td>
+        <td colspan="3" class="text-right">@Model.Cart.ComputeTotalValue():-</td>
     </tr>
     </tfoot>
 </table>
-<div class="row">
-    <div class="col-xs-6">
-        <a class=" btn btn-primary" asp-action="Index" asp-controller="Home"><i class="glyphicon glyphicon-arrow-left"></i> Fortsätt att handla</a>
-    </div>
-    <div class="text-right col-xs-6">
-        <form asp-action="Checkout" asp-controller="Order">
-            <button type="submit" class="btn btn-success" >
-                Checkout
-            </button>
-        </form>
-    </div>
+<div>
+    @Html.Partial("Forms/CheckoutFormPartial", new CheckoutFormViewModel())
 </div>
-
-
-
