@@ -8,7 +8,7 @@ namespace PizzeriaButikenOnline.Models
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
-        public string OrderToken { get; set; }
+        public Guid OrderToken { get; set; }
         public string UserId { get; set; }
         public AnonymousUserInformation AnonymousUserInformation { get; set; }
 

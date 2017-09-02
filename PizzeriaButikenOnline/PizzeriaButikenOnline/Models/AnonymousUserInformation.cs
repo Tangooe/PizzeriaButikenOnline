@@ -4,6 +4,8 @@ namespace PizzeriaButikenOnline.Models
 {
     public class AnonymousUserInformation
     {
+        public int Id { get; set; }
+
         public bool Delivery { get; set; }
 
         [Required]

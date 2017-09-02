@@ -18,6 +18,7 @@ namespace PizzeriaButikenOnline.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDish> OrderDishes { get; set; }
         public DbSet<OrderDishIngredient> OrderDishIngredients { get; set; }
+        public DbSet<AnonymousUserInformation> AnonymousUserInformations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

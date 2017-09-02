@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.ViewModels;
@@ -26,29 +25,32 @@ namespace PizzeriaButikenOnline.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Checkout(CheckoutFormViewModel viewModel)
         {
-            if (!ModelState.IsValid && !viewModel.Delivery)
+            if (viewModel.Delivery && !ModelState.IsValid)
                 return RedirectToAction("Index", "Cart");
 
             var order = new Order
             {
                 DateTime = DateTime.Now,
                 Active = true,
-                OrderToken = new Guid().ToString(),
-            };
+                OrderToken = Guid.NewGuid()
+        };
 
-            if (User.Identity.IsAuthenticated)
-                order.UserId = _userManager.GetUserId(User);
-            else
-                order.AnonymousUserInformation = new AnonymousUserInformation
-                {
-                    Name = viewModel.Name,
-                    StreetAddress = viewModel.StreetAddress,
-                    ZipCode = viewModel.ZipCode,
-                    City = viewModel.City,
-                    PhoneNumber = viewModel.PhoneNumber,
-                    Email = viewModel.Email,
-                    PaymentMethod = viewModel.PaymentMenthods.First(pm => pm.Id == viewModel.PaymentMethod).Name
-                };
+            if (viewModel.Delivery)
+            {
+                if (User.Identity.IsAuthenticated)
+                    order.UserId = _userManager.GetUserId(User);
+                else
+                    order.AnonymousUserInformation = new AnonymousUserInformation
+                    {
+                        Name = viewModel.Name,
+                        StreetAddress = viewModel.StreetAddress,
+                        ZipCode = viewModel.ZipCode,
+                        City = viewModel.City,
+                        PhoneNumber = viewModel.PhoneNumber,
+                        Email = viewModel.Email,
+                        PaymentMethod = viewModel.PaymentMenthods.First(pm => pm.Id == viewModel.PaymentMethod).Name
+                    };
+            }
 
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -80,7 +82,17 @@ namespace PizzeriaButikenOnline.Controllers
             _context.SaveChanges();
 
             _cart.Clear();
-            return View("CheckoutCompleted", _context.Orders.Include(o => o.OrderDishes).ThenInclude(od => od.Dish).FirstOrDefault(o => o.Id == order.Id));
+            return RedirectToActionPermanent(nameof(CheckoutCompleted), new { token = order.OrderToken });
+        }
+
+        [Route("Order/Checkout/{token:guid}")]
+        public IActionResult CheckoutCompleted(Guid token)
+        {
+            var order = _context.Orders.FirstOrDefault(o => o.Active && o.OrderToken == token);
+            if (order == null)
+                return NotFound();
+
+            return View("CheckoutCompleted", order);
         }
     }
 }
