@@ -1,10 +1,12 @@
-﻿@using System
-@using System.Linq
+﻿@using System.Linq
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model DishViewModel
     
-<form  id="@Model.Id" asp-action="AddToCart" asp-controller="Cart"  data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cartdiv">
+<form  id="@Model.Id" asp-action="AddToCart" asp-controller="Cart" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cartdiv">
     @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Name)
+    @Html.HiddenFor(x => x.Price)
+    @Html.HiddenFor(x => x.Category)
     <div class="dish-details">
         <div class="dish-number">
             <p>@Model.DishNumber.</p>
@@ -38,7 +40,7 @@
                             {
                                 <li>
                                     <input asp-for="@Model.Ingredients[i].IsSelected" type="checkbox"/>
-                                    <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name</label>
+                                    <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name @Model.Ingredients[i].Price:-</label>
                                     @if (Model.ShowAdminActions)
                                     {
                                         <a asp-controller="Ingredient" asp-action="Delete" asp-route-id="@Model.Ingredients[i].Id" class="text-danger glyphicon glyphicon-remove"></a>
@@ -46,6 +48,9 @@
 
                                     @Html.HiddenFor(x => Model.Ingredients[i].Id)
                                     @Html.HiddenFor(x => Model.Ingredients[i].Name)
+                                    @Html.HiddenFor(x => Model.Ingredients[i].Price)
+                                    @Html.HiddenFor(x => Model.Ingredients[i].IsSelected)
+                                    @Html.HiddenFor(x => Model.Ingredients[i].IsDefault)
                                 </li>
                             }
                         </ul>

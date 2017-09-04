@@ -49,12 +49,7 @@ namespace PizzeriaButikenOnline.Controllers
         [HttpPost]
         public IActionResult AddToCart(DishViewModel viewModel)
         {
-            var dish = _context.Dishes.Find(viewModel.Id);
-
-            if (dish == null)
-                return BadRequest();
-
-            _cart.AddItem(dish, 1, viewModel.Ingredients.Where(i => i.IsSelected).ToList());
+            _cart.AddItem(viewModel, 1);
 
             return PartialView(@"Components/CartSummary/Default", _cart);
         }
@@ -71,8 +66,23 @@ namespace PizzeriaButikenOnline.Controllers
         public IActionResult AdjustQuantity(int lineId, int quantity)
         {
             _cart.AdjustQuantity(lineId, quantity);
+            var checkoutForm = new CheckoutFormViewModel();
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
 
-            return View(nameof(Index), new CartIndexViewModel {Cart = _cart});
+                checkoutForm = new CheckoutFormViewModel
+                {
+                    Name = user.Name,
+                    StreetAddress = user.StreetAddress,
+                    City = user.City,
+                    ZipCode = user.ZipCode.ToString(),
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber
+                };
+            }
+
+            return View(nameof(Index), new CartIndexViewModel {Cart = _cart, CheckoutForm = checkoutForm });
         }
     }
 }

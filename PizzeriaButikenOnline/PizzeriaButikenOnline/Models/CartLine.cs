@@ -1,18 +1,23 @@
 ﻿using PizzeriaButikenOnline.ViewModels;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace PizzeriaButikenOnline.Models
 {
     public class CartLine
     {
         public int Id { get; set; }
-        public Dish Dish { get; set; }
-        public ICollection<IngredientViewModel> SelectedIngredients { get; set; }
+        public DishViewModel Dish { get; set; }
         public int Quantity { get; set; }
 
 
-        public void AddIngredient(IngredientViewModel ingredient) => SelectedIngredients.Add(ingredient);
+        public void AddIngredient(IngredientViewModel ingredient)
+        {
+            Dish.Ingredients.First(i => i.Id == ingredient.Id).IsSelected = true;
+        }
 
-        public void RemoveIngredient(IngredientViewModel ingredient) => SelectedIngredients.Remove(ingredient);
+        public void RemoveIngredient(IngredientViewModel ingredient)
+        {
+            Dish.Ingredients.First(i => i.Id == ingredient.Id).IsSelected = false;
+        }
     }
 }

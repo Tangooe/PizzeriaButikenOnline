@@ -67,15 +67,10 @@ namespace PizzeriaButikenOnline.Controllers
                 _context.OrderDishes.Add(orderDish);
                 _context.SaveChanges();
 
-                var defaultIngredients = _context.DishIngredients.Where(i => i.DishId == line.Dish.Id)
-                    .Select(di => di.IngredientId);
-                var extraIngredients = line.SelectedIngredients.Where(si => si.IsSelected)
-                    .Where(si => defaultIngredients.All(di => di != si.Id)).ToList();
-
-                _context.OrderDishIngredients.AddRange(extraIngredients.Select(ei => new OrderDishIngredient
+                _context.OrderDishIngredients.AddRange(line.Dish.Ingredients.Where(i => i.IsSelected).Select(i => new OrderDishIngredient
                 {
                     OrderDishId = orderDish.Id,
-                    IngredientId = ei.Id
+                    IngredientId = i.Id
                 }).ToList());
             }
 

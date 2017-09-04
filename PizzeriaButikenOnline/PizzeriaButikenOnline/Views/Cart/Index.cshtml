@@ -1,9 +1,11 @@
 ﻿@using System.Linq
+@using System.Security.Cryptography.X509Certificates
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model CartIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
+    var ingredients = Model.Cart.Lines.Select(l => l.Dish.Ingredients).SelectMany(i => i).ToList();
 }
 
 <h2>Din Kundvagn</h2>
@@ -31,9 +33,25 @@
                     <b>@line.Dish.Name </b><i class="small-font text-warning glyphicon glyphicon-pencil"></i>
                 </div>
                 <div>
-                    <a class="text-muted text-capitalize">
-                        @string.Join(", ", line.SelectedIngredients.Select(i => i.Name))
+                    <a class="accordion text-muted text-capitalize">
+                        @string.Join(", ", line.Dish.Ingredients.Where(i => i.IsSelected).Select(i => i.Name))
                     </a>
+                    <div class="accordion-panel">
+                        <div class="form-group">
+                            <ul class="checkbox-grid">                            
+                                @for (var i = 0; i < ingredients.Count/2; i++)
+                                {
+                                    <li>
+                                        <input asp-for="@ingredients[i].IsSelected" type="checkbox"/>
+                                        <label asp-for="@ingredients[i].IsSelected">@ingredients[i].Name</label>
+
+                                        @Html.HiddenFor(x => ingredients[i].Id)
+                                        @Html.HiddenFor(x => ingredients[i].Name)
+                                    </li>
+                                }                                
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </td>
             <td class="text-right">@line.Dish.Price:-</td>
@@ -59,3 +77,29 @@
 <div>
     @Html.Partial("Forms/CheckoutFormPartial", Model.CheckoutForm)
 </div>
+
+@section Scripts
+{
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].onclick = function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            }
+        }
+
+        $(function () {
+            $('.js-toggle-empty-categories').change(function () {                
+                $('#js-empty-categories').toggle(this.checked);
+            }).change();
+        });
+    </script>
+}

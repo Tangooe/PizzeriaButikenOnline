@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using PizzeriaButikenOnline.Extensions;
 using PizzeriaButikenOnline.ViewModels;
 using System;
-using System.Collections.Generic;
 
 namespace PizzeriaButikenOnline.Models
 {
@@ -21,9 +20,9 @@ namespace PizzeriaButikenOnline.Models
         [JsonIgnore]
         public ISession Session { get; private set; }
 
-        public override void AddItem(Dish dish, int quantity, IList<IngredientViewModel> ingredients)
+        public override void AddItem(DishViewModel dish, int quantity)
         {
-            base.AddItem(dish, quantity, ingredients);
+            base.AddItem(dish, quantity);
             Session.SetJson(nameof(Cart), this);
         }
 

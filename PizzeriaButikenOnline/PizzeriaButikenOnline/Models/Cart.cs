@@ -10,27 +10,27 @@ namespace PizzeriaButikenOnline.Models
 
         public virtual void AdjustQuantity(int lineId , int quantity)
         {
-            var line = _lineCollection.FirstOrDefault(lc => lc.Id == lineId);
+            var line = _lineCollection.First(lc => lc.Id == lineId);
             line.Quantity += quantity;
 
             if (line.Quantity <= 0)
                 RemoveLine(line.Id);
         }
 
-        public virtual void AddItem(Dish dish, int quantity, IList<IngredientViewModel> ingredients)
+        public virtual void AddItem(DishViewModel dish, int quantity)
         {
             var line = _lineCollection.FirstOrDefault(lc =>
                 lc.Dish.Id == dish.Id &&
-                lc.SelectedIngredients.Select(si => si.Id).SequenceEqual(ingredients.Select(i => i.Id)));
+                lc.Dish.Ingredients.Select(si => si.IsSelected).SequenceEqual(dish.Ingredients.Select(i => i.IsSelected)));
 
             if (line == null)
             {
+                dish.Price += dish.Ingredients.Where(i => !i.IsDefault && i.IsSelected).Sum(i => i.Price);
                 _lineCollection.Add(new CartLine
                 {
                     Id = _lineCollection.Count + 1,
                     Dish = dish,
-                    Quantity = quantity,
-                    SelectedIngredients = ingredients                     
+                    Quantity = quantity       
                 });
             }
             else
@@ -39,12 +39,16 @@ namespace PizzeriaButikenOnline.Models
             }
         }
 
-        public virtual void RemoveLine(int lineId) => _lineCollection.RemoveAll(lc => lc.Id == lineId);
+        public virtual void RemoveLine(int lineId) => 
+            _lineCollection.RemoveAll(lc => lc.Id == lineId);
 
-        public virtual decimal ComputeTotalValue() => _lineCollection.Sum(lc => lc.Dish.Price * lc.Quantity);
+        public virtual decimal ComputeTotalValue() => 
+            _lineCollection.Sum(lc => lc.Dish.Price * lc.Quantity);
 
-        public virtual void Clear() => _lineCollection.Clear();
+        public virtual void Clear() => 
+            _lineCollection.Clear();
 
-        public virtual IEnumerable<CartLine> Lines => _lineCollection;
+        public virtual IEnumerable<CartLine> Lines => 
+            _lineCollection;
     }
 }
