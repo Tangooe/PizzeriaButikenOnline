@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.ViewModels;
+using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
@@ -65,22 +66,12 @@ namespace PizzeriaButikenOnline.Controllers
         public ActionResult Edit(CategoryFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
-            {
                 return View("Forms/CategoryFormPartial");
-            }
-            try
-            {
-                var category = _context.Categories.Find(viewModel.Id);
 
-                category.Name = viewModel.Name;
-                _context.SaveChanges();
+            _context.Categories.Single(c => c.Id == viewModel.Id).Update(viewModel);
+            _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch
-            {
-                return View("Forms/CategoryFormPartial", viewModel);
-            }
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         public ActionResult Delete(int id)
