@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
@@ -48,13 +49,19 @@ namespace PizzeriaButikenOnline.Controllers
         [HttpDelete("api/categories/{id:int}")]
         public ActionResult Delete(int id)
         {
-            var category = _context.Categories.SingleOrDefault(c => c.Id == id);
+            var category = _context.Categories
+                .Include(c => c.Dishes)
+                .SingleOrDefault(c => c.Id == id);
 
             if (category == null)
                 return NotFound();
 
-            _context.Dishes.RemoveRange(_context.Dishes.Where(d => d.CategoryId == id));
-            _context.SaveChanges();
+            //TODO: replace this with some cascade on delete stuff
+            if (category.Dishes.Any())
+            {
+                _context.Dishes.RemoveRange(_context.Dishes.Where(d => d.CategoryId == id));
+                _context.SaveChanges();
+            }
 
             _context.Categories.Remove(category);
             _context.SaveChanges();
