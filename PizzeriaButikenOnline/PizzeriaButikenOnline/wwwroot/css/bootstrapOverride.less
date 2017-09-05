@@ -1,0 +1,264 @@
+﻿@color_primary: #393939;
+@color_white: #fff;
+@color_danger: #ff0000;
+@color_warning: Orange;
+@color_success: #81C02F;
+@font_lato: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+@background_color_primary: #393939;
+@background_color_grey: #454545;
+@border_color_primary: #393939;
+@border_color_default: #2196f3;
+@border_color_white: #fff;
+
+html {
+    font-family: @font_lato;
+    color: @color_primary;
+}
+
+body {
+    font-size: 17px;
+}
+
+.container {
+    padding-right: 35px;
+    padding-left: 35px;
+}
+
+.container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.img-responsive {
+    max-height: 400px;
+}
+
+.thumbnail {
+    > img {
+        max-height: 400px;
+    }
+
+    a {
+        > img {
+            max-height: 400px;
+        }
+    }
+}
+
+.carousel-inner {
+    > .item {
+        > img {
+            max-height: 400px;
+        }
+
+        > a {
+            > img {
+                max-height: 400px;
+            }
+        }
+    }
+}
+
+.navbar-inverse {
+    background-color: @background_color_primary;
+    border-color: @border_color_primary;
+
+    .navbar-nav {
+        > li {
+            > a {
+                color: @color_white;
+            }
+        }
+
+        > .open {
+            > a {
+                background-color: @background_color_grey;
+
+                &:hover {
+                    background-color: @background_color_grey;
+                }
+
+                &:active {
+                    background-color: @background_color_grey;
+                }
+            }
+        }
+
+        > .dropdown {
+            > a {
+                .caret {
+                    border-top-color: @border_color_white;
+                    border-bottom-color: @border_color_white;
+                }
+            }
+        }
+    }
+
+    .navbar-brand {
+        color: @color_white;
+        font-size: 21px;
+
+        > span {
+            color: @color_danger;
+            font-size: 21px;
+        }
+    }
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    padding: 0 15px;
+    font-size: 17px;
+    height: 45px;
+    border-radius: 9px;
+
+    &:focus {
+        border-color: @border_color_default;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
+
+.dropdown-menu {
+    border-color: @border_color_default;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.modal-body {
+    padding: 10px 40px;
+}
+
+.btn-lg {
+    margin-bottom: 6px;
+    padding: 7px 20px;
+    font-size: 17px;
+    border-radius: 9px;
+}
+
+.btn-sm {
+    margin-bottom: 6px;
+    padding: 3px 11px;
+    font-size: 12px;
+    border-radius: 9px;
+}
+
+.btn-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: @color_primary;
+
+    &:focus {
+        outline: none;
+        color: @color_primary;
+    }
+
+    &:active {
+        &:focus {
+            outline: none;
+            color: @color_primary;
+        }
+    }
+
+    &:active.focus {
+        outline: none;
+        color: @color_primary;
+    }
+}
+
+.btn-link.active {
+    &:focus {
+        outline: none;
+        color: @color_primary;
+    }
+}
+
+.btn-link.focus {
+    outline: none;
+    color: @color_primary;
+}
+
+.btn-link.active.focus {
+    outline: none;
+    color: @color_primary;
+}
+
+.table {
+    > thead {
+        > tr {
+            > th {
+                border-top: none;
+                padding: 2px;
+            }
+
+            > td {
+                border-top: none;
+                padding: 2px;
+            }
+        }
+    }
+
+    > tbody {
+        > tr {
+            > th {
+                border-top: none;
+                padding: 2px;
+            }
+
+            > td {
+                border-top: none;
+                padding: 2px;
+            }
+        }
+    }
+
+    > tfoot {
+        > tr {
+            > th {
+                border-top: none;
+                padding: 2px;
+            }
+
+            > td {
+                border-top: none;
+                padding: 2px;
+            }
+        }
+    }
+}
+
+.checkbox {
+    margin-top: 0px;
+    margin-left: 2px;
+}
+
+.glyphicon-shopping-cart {
+    font-size: 18px;
+}
+
+.glyphicon-plus {
+    font-size: 18px;
+}
+
+.text-danger {
+    color: @color_danger;
+}
+
+.text-warning {
+    color: @color_warning;
+}
+
+.text-primary {
+    color: @color_primary;
+}
+
+.text-success {
+    color: @color_success;
+}
+
+tfoot {
+    border-top: 2px solid #dddddd;
+}
