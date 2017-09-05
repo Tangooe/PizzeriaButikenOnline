@@ -44,8 +44,7 @@ namespace PizzeriaButikenOnline.Controllers
                     Name = i.Name,
                     Price = i.Price,
                     IsSelected = false
-                }).ToList(),
-                Action = nameof(Create)
+                }).ToList()
             };
 
             return PartialView("Forms/DishFormPartial", viewModel);
@@ -126,8 +125,7 @@ namespace PizzeriaButikenOnline.Controllers
                    Name = i.Name,
                    Price = i.Price,
                    IsSelected = dish.DishIngredients.Any(di => di.IngredientId == i.Id)
-               }).OrderBy(i => i.Name).ToList(),
-               Action = nameof(Edit)
+               }).OrderBy(i => i.Name).ToList()
             };
 
             return View("Forms/DishFormPartial", viewModel);
@@ -167,22 +165,14 @@ namespace PizzeriaButikenOnline.Controllers
                 return View("Forms/DishFormPartial", viewModel);
             }
         }
-
+        
+        [HttpDelete("api/dishes/{id:int}")]
         public ActionResult Delete(int id)
         {
-            try
-            {
-                var dish = _context.Dishes.Find(id);
+            _context.Dishes.Remove(_context.Dishes.Find(id));
+            _context.SaveChanges();
 
-                _context.Dishes.Remove(dish);
-                _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch
-            {
-                return RedirectToAction(nameof(Index), "Home");
-            }
+            return Ok();
         }
     }
 }

@@ -109,6 +109,44 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     
     <script>
+        $(document).ready(function() {
+            $(".js-delete-dish").click(function(e) {
+                var link = $(e.target);
+
+                bootbox.dialog({
+                    message: "Är du säker på att du vill ta bort den här maträtten?",
+                    title: "Godkänn",
+                    buttons: {
+                        no: {
+                            label: "Nej",
+                            className: "btn-default",
+                            callback: function() {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Ja",
+                            className: "btn-danger",
+                            callback: function() {
+                                $.ajax({
+                                        url: "/api/dishes/" + link.attr("data-dish-id"),
+                                        method: "DELETE"
+                                    })
+                                    .done(function() {
+                                        link.parents("li").fadeOut(function() {
+                                            $(this).remove();
+                                        });
+                                    })
+                                    .fail(function() {
+                                        alert("Something failed!");
+                                    });
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
         var acc = document.getElementsByClassName("accordion");
         var i;
 

@@ -7,7 +7,8 @@
     "jquery-validation-unobtrusive": "3.2.6",
     "bootstrap": "v3.3.7",
     "jquery-ajax-unobtrusive": "3.2.4",
-    "ajax": "v2.3.0"
+    "ajax": "v2.3.0",
+    "bootbox.js": "bootbox#v4.4.0"
   },
   "resolutions": {
     "bootstrap": "v4.0.0-beta"

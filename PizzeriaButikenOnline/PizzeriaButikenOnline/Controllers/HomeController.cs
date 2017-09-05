@@ -41,6 +41,12 @@ namespace PizzeriaButikenOnline.Controllers
             var viewModel = new MenuViewModel
             {
                 Dishes = dishViewModels,
+                AllIngredients = _context.Ingredients.Select(i => new IngredientViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Price = i.Price
+                }).ToList(),
                 AllCategories =  _context.Categories.Include(c => c.Dishes).ToList(),
                 ShowAdminActions = User.IsInRole("Admin")
             };
