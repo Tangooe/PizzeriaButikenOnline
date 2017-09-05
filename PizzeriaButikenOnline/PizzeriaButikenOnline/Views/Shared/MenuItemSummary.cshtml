@@ -38,7 +38,7 @@
                         <ul class="checkbox-grid">
                             @for (var i = 0; i < Model.Ingredients.Count; i++)
                             {
-                                <li>
+                                <li  class="ingredient-@Model.Ingredients[i].Id">
                                     <input asp-for="@Model.Ingredients[i].IsSelected" type="checkbox"/>
                                     <label asp-for="@Model.Ingredients[i].IsSelected">@Model.Ingredients[i].Name @Model.Ingredients[i].Price:-</label>
                                     @if (Model.ShowAdminActions)

@@ -76,6 +76,7 @@
 
         $(".js-delete-ingredient").click(function (e) {
             var link = $(e.target);
+            var linkId = link.attr("data-ingredient-id");
 
             bootbox.dialog({
                 message: "Är du säker på att du vill ta bort den här ingrediensen?",
@@ -93,12 +94,11 @@
                         className: "btn-danger",
                         callback: function () {
                             $.ajax({
-                                    url: "/api/ingredients/" + link.attr("data-ingredient-id"),
+                                    url: "/api/ingredients/" + linkId,
                                     method: "DELETE"
                                 })
                                 .done(function () {
-                                    $("ul.checkbox-grid > li").each(function () {
-                                        //TODO: find out how to remove the selected item only and not all of them
+                                    $("ul.checkbox-grid > li.ingredient-"+linkId).each(function () {
                                         $(this).fadeOut(function () {
                                             $(this).remove();
                                         });
