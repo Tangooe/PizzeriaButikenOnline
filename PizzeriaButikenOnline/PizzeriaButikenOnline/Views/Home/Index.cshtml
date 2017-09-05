@@ -65,38 +65,40 @@
     }
     @foreach (var category in Model.Dishes.GroupBy(d => d.Category).ToList())
     {
-        <div>
-            <h2 class="dish-category">@category.Key.Name             
-            @if (Model.ShowAdminActions)
-            {
-                <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Key.Id" class="small-font text-warning glyphicon glyphicon-pencil"></a>
-                <a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Key.Id" class="small-font text-danger glyphicon glyphicon-remove"></a>
-            }
-            </h2>
+        <div class="js-category-group">
+            <div>
+                <h2 class="dish-category">@category.Key.Name             
+                @if (Model.ShowAdminActions)
+                {
+                    <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Key.Id" class="small-font text-warning glyphicon glyphicon-pencil"></a>
+                    <a data-category-id="@category.Key.Id" class="js-delete-category small-font text-danger glyphicon glyphicon-remove"></a>
+                }
+                </h2>
+            </div>
+            <ul class="menu">
+                @foreach (var dish in category)
+                {
+                    <li>
+                        @{
+                            dish.DishNumber = dishNumber;
+                            dish.ShowAdminActions = Model.ShowAdminActions;
+                            @Html.Partial("MenuItemSummary", dish)
+                            dishNumber++;
+                        }
+                    </li>
+                }
+            </ul>
         </div>
-        <ul class="menu">
-            @foreach (var dish in category)
-            {
-                <li>
-                    @{
-                        dish.DishNumber = dishNumber;
-                        dish.ShowAdminActions = Model.ShowAdminActions;
-                        @Html.Partial("MenuItemSummary", dish)
-                        dishNumber++;
-                    }
-                </li>
-            }
-        </ul>
     }
     @if(Model.ShowAdminActions)
     { 
         <div id="js-empty-categories">
             @foreach (var category in Model.AllCategories.Where(c => c.Dishes.Count == 0))
             {
-                <div>
+                <div class="js-category-group">
                     <h2 class="dish-category">@category.Name             
                         <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="small-font text-warning glyphicon glyphicon-pencil"></a>
-                        <a asp-controller="Category" asp-action="Delete"  asp-route-id="@category.Id" class="small-font text-danger glyphicon glyphicon-remove"></a>
+                        <a data-category-id="@category.Id" class="js-delete-category small-font text-danger glyphicon glyphicon-remove"></a>
                     </h2>
                 </div>
             }
@@ -134,6 +136,42 @@
                                     })
                                     .done(function() {
                                         link.parents("li").fadeOut(function() {
+                                            $(this).remove();
+                                        });
+                                    })
+                                    .fail(function() {
+                                        alert("Something failed!");
+                                    });
+                            }
+                        }
+                    }
+                });
+            });
+
+            $(".js-delete-category").click(function(e) {
+                var link = $(e.target);
+
+                bootbox.dialog({
+                    message: '<p>Är du säker på att du vill ta bort den här kategorin?</p><p class="text-danger">OBS! ALLA maträtter under denna kategori kommer att försvinna!</p>',
+                    title: "Godkänn",
+                    buttons: {
+                        no: {
+                            label: "Nej",
+                            className: "btn-default",
+                            callback: function() {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Ja",
+                            className: "btn-danger",
+                            callback: function() {
+                                $.ajax({
+                                        url: "/api/categories/" + link.attr("data-category-id"),
+                                        method: "DELETE"
+                                    })
+                                    .done(function() {
+                                        link.parents(".js-category-group").fadeOut(function() {
                                             $(this).remove();
                                         });
                                     })
