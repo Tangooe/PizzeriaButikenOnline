@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using PizzeriaButikenOnline.ViewModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace PizzeriaButikenOnline.Models
 {
@@ -23,5 +25,19 @@ namespace PizzeriaButikenOnline.Models
 
         public ICollection<DishIngredient> DishIngredients { get; set; }
         public ICollection<OrderDish> OrderDishes { get; set; }
+
+        public void Update(DishFormViewModel viewModel)
+        {
+            Name = viewModel.Name;
+            Price = viewModel.Price;
+            CategoryId = viewModel.Category;
+            DishIngredients = viewModel.Ingredients
+                .Where(i => i.IsSelected)
+                .Select(i => new DishIngredient
+                {
+                    IngredientId = i.Id,
+                    Dish = this
+                }).ToList();
+        }
     }
 }

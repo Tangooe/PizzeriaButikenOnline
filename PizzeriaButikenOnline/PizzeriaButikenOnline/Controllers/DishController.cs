@@ -137,33 +137,22 @@ namespace PizzeriaButikenOnline.Controllers
         {
             if (!ModelState.IsValid)
             {
+                viewModel.Categories = _context.Categories.ToList();
                 return View("Forms/DishFormPartial", viewModel);
             }
-            try
-            {
-                var dish = _context.Dishes.FirstOrDefault(d => d.Id == viewModel.Id);
-                var dishIngredients = viewModel.Ingredients.Where(i => i.IsSelected).Select(i => new DishIngredient
-                {
-                    DishId = viewModel.Id,
-                    IngredientId = i.Id
-                }).ToList();
 
-                dish.Name = viewModel.Name;
-                dish.Price = viewModel.Price;
-                dish.CategoryId = viewModel.Category;
+            var dish = _context.Dishes
+                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
+                .Single(d => d.Id == viewModel.Id);
 
-                _context.DishIngredients.RemoveRange(_context.DishIngredients.Where(di => di.DishId == viewModel.Id));
-                _context.SaveChanges();
+            // TODO: Learn how to make the update work without these two lines (conflicting primary keys)
+            _context.DishIngredients.RemoveRange(_context.DishIngredients.Where(di => di.DishId == dish.Id));
+            _context.SaveChanges();
 
-                _context.AddRange(dishIngredients);
-                _context.SaveChanges();
+            dish.Update(viewModel);
+            _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch
-            {
-                return View("Forms/DishFormPartial", viewModel);
-            }
+            return RedirectToAction(nameof(Index), "Home");
         }
         
         [HttpDelete("api/dishes/{id:int}")]
