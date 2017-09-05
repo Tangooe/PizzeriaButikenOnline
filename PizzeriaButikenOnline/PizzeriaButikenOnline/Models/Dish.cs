@@ -30,7 +30,7 @@ namespace PizzeriaButikenOnline.Models
         {
             Name = viewModel.Name;
             Price = viewModel.Price;
-            CategoryId = viewModel.Category;
+            CategoryId = viewModel.CategoryId;
             DishIngredients = viewModel.Ingredients
                 .Where(i => i.IsSelected)
                 .Select(i => new DishIngredient

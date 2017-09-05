@@ -42,7 +42,7 @@ namespace PizzeriaButikenOnline.ViewModels
 
         [Required(ErrorMessage = "En kategori måste vara vald")]
         [DisplayName("Kategori")]
-        public int Category { get; set; }
+        public int CategoryId { get; set; }
 
         public IList<Category> Categories { get; set; }
 

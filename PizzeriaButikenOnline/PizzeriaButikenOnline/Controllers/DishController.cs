@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -13,38 +14,23 @@ namespace PizzeriaButikenOnline.Controllers
     public class DishController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public DishController(ApplicationDbContext context)
+        public DishController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public ActionResult Details(int id)
-        {
-            var dish = _context.Dishes
-                .Include(d => d.Category)
-                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
-                .FirstOrDefault(x => x.Id == id);
-
-            if (dish == null)
-                return NotFound();
-
-            return View(dish);
-        }
-
-
+        // This is not used at the moment
         public ActionResult Create()
         {
             var viewModel = new DishFormViewModel
             {
                 Categories = _context.Categories.ToList(),
-                Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Price = i.Price,
-                    IsSelected = false
-                }).ToList()
+                Ingredients = _context.Ingredients
+                    .Select(i => _mapper.Map<Ingredient, IngredientViewModel>(i))
+                    .ToList()
             };
 
             return PartialView("Forms/DishFormPartial", viewModel);
@@ -56,77 +42,54 @@ namespace PizzeriaButikenOnline.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Price = i.Price,
-                    IsSelected = false
-                }).ToList();
+                viewModel.Ingredients = _context.Ingredients
+                    .Select(i => _mapper.Map<Ingredient, IngredientViewModel>(i))
+                    .ToList();
 
                 viewModel.Categories = _context.Categories.ToList();
+
                 return PartialView("Forms/DishFormPartial", viewModel);
             }
 
-            try
-            {
-                var dish = new Dish
-                {
-                    Name =  viewModel.Name,
-                    Price = viewModel.Price,
-                    CategoryId = viewModel.Category
-                };
-                _context.Dishes.Add(dish);
+            var dish = _mapper.Map<DishFormViewModel, Dish>(viewModel);
 
-                if (viewModel.Ingredients.Any(i => i.IsSelected))
-                {
-                    _context.DishIngredients.AddRange(viewModel.Ingredients.Where(I => I.IsSelected).Select(i => new DishIngredient
+            _context.Dishes.Add(dish);
+
+            if (viewModel.Ingredients.Any(i => i.IsSelected))
+            {
+                _context.DishIngredients.AddRange(viewModel.Ingredients
+                    .Where(I => I.IsSelected)
+                    .Select(i => new DishIngredient
                     {
                         Dish = dish,
                         IngredientId = i.Id
-                    }).ToList());
-                }
-                _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index), "Home");
+                    })
+                    .ToList());
             }
-            catch
-            {
-                viewModel.Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Price = i.Price,
-                    IsSelected = false
-                }).ToList();
+            _context.SaveChanges();
 
-                viewModel.Categories = _context.Categories.ToList();
-                return PartialView("Forms/DishFormPartial", viewModel);
-            }
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         public ActionResult Edit(int id)
         {
             var dish = _context.Dishes
                 .Include(d => d.Category)
-                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
-                .FirstOrDefault(x => x.Id == id);
+                .Include(d => d.DishIngredients)
+                .ThenInclude(di => di.Ingredient)
+                .Single(x => x.Id == id);
 
-            var viewModel = new DishFormViewModel
+            var viewModel = _mapper.Map<Dish, DishFormViewModel>(dish);
+            viewModel.Categories = _context.Categories.ToList();
+            viewModel.Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
             {
-               Id = dish.Id,
-               Name = dish.Name,
-               Price = dish.Price,
-               Category = dish.CategoryId,
-               Categories = _context.Categories.ToList(),
-               Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
-               {
-                   Id = i.Id,
-                   Name = i.Name,
-                   Price = i.Price,
-                   IsSelected = dish.DishIngredients.Any(di => di.IngredientId == i.Id)
-               }).OrderBy(i => i.Name).ToList()
-            };
+                Id = i.Id,
+                Name = i.Name,
+                Price = i.Price,
+                IsSelected = dish.DishIngredients.Any(di => di.IngredientId == i.Id)
+            })
+            .OrderBy(i => i.Name)
+            .ToList();
 
             return View("Forms/DishFormPartial", viewModel);
         }
