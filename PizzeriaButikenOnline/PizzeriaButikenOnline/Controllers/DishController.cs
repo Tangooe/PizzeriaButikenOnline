@@ -169,7 +169,12 @@ namespace PizzeriaButikenOnline.Controllers
         [HttpDelete("api/dishes/{id:int}")]
         public ActionResult Delete(int id)
         {
-            _context.Dishes.Remove(_context.Dishes.Find(id));
+            var dish = _context.Dishes.Find(id);
+
+            if (dish == null)
+                return NotFound();
+
+            _context.Dishes.Remove(dish);
             _context.SaveChanges();
 
             return Ok();
