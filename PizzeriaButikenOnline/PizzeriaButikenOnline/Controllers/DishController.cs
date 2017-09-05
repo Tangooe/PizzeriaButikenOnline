@@ -22,20 +22,6 @@ namespace PizzeriaButikenOnline.Controllers
             _mapper = mapper;
         }
 
-        // This is not used at the moment
-        public ActionResult Create()
-        {
-            var viewModel = new DishFormViewModel
-            {
-                Categories = _context.Categories.ToList(),
-                Ingredients = _context.Ingredients
-                    .Select(i => _mapper.Map<Ingredient, IngredientViewModel>(i))
-                    .ToList()
-            };
-
-            return PartialView("Forms/DishFormPartial", viewModel);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(DishFormViewModel viewModel)

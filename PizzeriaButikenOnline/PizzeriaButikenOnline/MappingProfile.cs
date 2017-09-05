@@ -9,6 +9,10 @@ namespace PizzeriaButikenOnline
         public MappingProfile()
         {
             CreateMap<Ingredient, IngredientViewModel>();
+
+            CreateMap<IngredientFormViewModel, Ingredient>();
+            CreateMap<Ingredient, IngredientFormViewModel >();
+
             CreateMap<DishFormViewModel, Dish>();
             CreateMap<Dish, DishFormViewModel>();
         }

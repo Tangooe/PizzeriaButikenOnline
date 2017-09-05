@@ -145,6 +145,45 @@
                     }
                 });
             });
+
+            $(".js-delete-ingredient").click(function (e) {
+                var link = $(e.target);
+
+                bootbox.dialog({
+                    message: "Är du säker på att du vill ta bort den här ingrediensen?",
+                    title: "Godkänn",
+                    buttons: {
+                        no: {
+                            label: "Nej",
+                            className: "btn-default",
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Ja",
+                            className: "btn-danger",
+                            callback: function () {
+                                $.ajax({
+                                    url: "/api/ingredients/" + link.attr("data-ingredient-id"),
+                                    method: "DELETE"
+                                })
+                                    .done(function () {
+                                        $("ul.checkbox-grid > li").each(function () {
+                                            //TODO: find out how to remove the selected item only and not all of them
+                                            $(this).fadeOut(function() {
+                                                $(this).remove();
+                                            });
+                                        });
+                                    })
+                                    .fail(function () {
+                                        alert("Something failed!");
+                                    });
+                            }
+                        }
+                    }
+                });
+            });
         });
 
         var acc = document.getElementsByClassName("accordion");

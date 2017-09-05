@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
@@ -7,21 +9,16 @@ using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
+    [Authorize]
     public class IngredientController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public IngredientController(ApplicationDbContext context)
+        public IngredientController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-        }
-
-        public ActionResult Create()
-        {
-            return PartialView("Forms/IngredientFormPartial", new IngredientFormViewModel
-            {
-                Action = nameof(Create)
-            });
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -29,37 +26,19 @@ namespace PizzeriaButikenOnline.Controllers
         public ActionResult Create(IngredientFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
-            {
                 return PartialView("Forms/IngredientFormPartial", viewModel);
-            }
 
-            try
-            {
-                _context.Ingredients.Add(new Ingredient
-                {
-                    Name = viewModel.Name,
-                    Price = viewModel.Price
-                });
-                _context.SaveChanges();
+            _context.Ingredients.Add(_mapper.Map<IngredientFormViewModel, Ingredient>(viewModel));
+            _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch
-            {
-                return PartialView("Forms/IngredientFormPartial", viewModel);
-            }
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         public ActionResult Edit(int id)
         {
-            var ingredient = _context.Ingredients.Find(id);
-            var viewModel = new IngredientFormViewModel
-            {
-                Id = ingredient.Id,
-                Name = ingredient.Name,
-                Price = ingredient.Price,
-                Action = nameof(Edit)
-            };
+            var ingredient = _context.Ingredients.Single(i => i.Id == id);
+            var viewModel = _mapper.Map<Ingredient, IngredientFormViewModel>(ingredient);
+
             return View("Forms/IngredientFormPartial", viewModel);
         }
 
@@ -76,21 +55,18 @@ namespace PizzeriaButikenOnline.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
+        [HttpDelete("api/ingredients/{id:int}")]
         public ActionResult Delete(int id)
         {
-            try
-            {
-                var ingredient = _context.Ingredients.Find(id);
+            var ingredient = _context.Ingredients.SingleOrDefault(i => i.Id == id);
 
-                _context.Ingredients.Remove(ingredient);
-                _context.SaveChanges();
+            if (ingredient == null)
+                return NotFound();
 
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch
-            {
-                return RedirectToAction(nameof(Index), "Home");
-            }
+            _context.Ingredients.Remove(ingredient);
+            _context.SaveChanges();
+
+            return Ok();
         }
     }
 }
