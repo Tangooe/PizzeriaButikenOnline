@@ -28,6 +28,7 @@ namespace PizzeriaButikenOnline.Controllers
             {
                 var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
 
+                if(user != null)
                 checkoutForm = new CheckoutFormViewModel
                 {
                     Name = user.Name,

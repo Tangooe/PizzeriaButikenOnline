@@ -52,25 +52,23 @@
             </div>
         </div>
     </div>
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default panel-collapse collapse collapseOne">
-            <div class="panel-heading">
-                <h3>
-                    Betalningssätt
-                </h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group">
-                    @foreach (var paymentMethod in Model.PaymentMenthods)
-                    {
-                        <div>
-                            <label>
-                                <input asp-for="PaymentMethod" type="radio" value="@paymentMethod.Id" />
-                                @paymentMethod.Name
-                            </label>
-                        </div>
-                    }
-                </div>
+    <div class="panel panel-default panel-collapse collapse collapseOne">
+        <div class="panel-heading">
+            <h3>
+                Betalningssätt
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                @foreach (var paymentMethod in Model.PaymentMenthods)
+                {
+                    <div>
+                        <label>
+                            <input asp-for="PaymentMethod" type="radio" value="@paymentMethod.Id" />
+                            @paymentMethod.Name
+                        </label>
+                    </div>
+                }
             </div>
         </div>
     </div>

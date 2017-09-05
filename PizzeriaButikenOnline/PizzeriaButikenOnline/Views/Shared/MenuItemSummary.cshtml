@@ -30,10 +30,10 @@
         @if (Model.Ingredients.Any(x => x.IsSelected))
         {
             <div class="dish-ingredients">
-                <a class="accordion text-muted text-capitalize">
+                <a class="text-muted text-capitalize" data-toggle="collapse" data-target="#menu-ingredients-panel-@Model.Id">
                     @string.Join(", ", Model.Ingredients.Where(i => i.IsSelected).Select(i => i.Name)) <i class="small-font glyphicon glyphicon-pencil"></i>
                 </a>
-                <div class="accordion-panel">
+                <div id="menu-ingredients-panel-@Model.Id" class="collapse">
                     <div class="form-group">
                         <ul class="checkbox-grid">
                             @for (var i = 0; i < Model.Ingredients.Count; i++)
