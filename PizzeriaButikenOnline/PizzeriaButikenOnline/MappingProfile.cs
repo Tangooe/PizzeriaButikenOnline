@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using PizzeriaButikenOnline.Models;
-using PizzeriaButikenOnline.ViewModels;
+using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.ViewModels;
 
 namespace PizzeriaButikenOnline
 {

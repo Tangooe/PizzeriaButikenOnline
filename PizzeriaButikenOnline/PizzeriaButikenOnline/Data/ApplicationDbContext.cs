@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Core.Models;
 
 namespace PizzeriaButikenOnline.Data
 {

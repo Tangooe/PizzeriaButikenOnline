@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PizzeriaButikenOnline.Models;
 using System.Collections.Generic;
 using System.Linq;
+using PizzeriaButikenOnline.Core.Models;
 
 namespace PizzeriaButikenOnline.Data
 {

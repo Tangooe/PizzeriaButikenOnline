@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Core.Models;
 
 namespace PizzeriaButikenOnline.Components
 {

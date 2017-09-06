@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.ViewModels;
 using PizzeriaButikenOnline.Persistence;
-using PizzeriaButikenOnline.ViewModels;
 using System.Diagnostics;
 using System.Linq;
 
@@ -10,10 +10,10 @@ namespace PizzeriaButikenOnline.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public HomeController(UnitOfWork unitOfWork, IMapper mapper)
+        public HomeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.ViewModels;
 using PizzeriaButikenOnline.Persistence;
-using PizzeriaButikenOnline.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +13,11 @@ namespace PizzeriaButikenOnline.Controllers
     public class OrderController : Controller
     {
         private readonly Cart _cart;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
 
-        public OrderController(Cart cart, UnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public OrderController(Cart cart, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _cart = cart;
             _unitOfWork = unitOfWork;

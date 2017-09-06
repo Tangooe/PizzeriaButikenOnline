@@ -1,12 +1,13 @@
-﻿using PizzeriaButikenOnline.Data;
-using PizzeriaButikenOnline.Models;
+﻿using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.Repositories;
+using PizzeriaButikenOnline.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Repositories
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly ApplicationDbContext _context;
 

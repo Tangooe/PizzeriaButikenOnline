@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.ViewModels;
 using PizzeriaButikenOnline.Persistence;
-using PizzeriaButikenOnline.ViewModels;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
@@ -13,9 +13,9 @@ namespace PizzeriaButikenOnline.Controllers
     public class DishController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DishController(IMapper mapper, UnitOfWork unitOfWork)
+        public DishController(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;

@@ -1,5 +1,4 @@
-﻿@using System.Linq
-@model Order
+﻿@model Order
 @{
     ViewData["Title"] = "CheckoutCompleted";
 }
@@ -13,6 +12,7 @@
 @section Scripts
 {
     <script>
+        //TODO: Move this
 // Set the date we're counting down to
         var countDownDate = new Date("@Model.DateTime.AddMinutes(30).ToString("MMM d, yyyy HH:mm:ss")").getTime();
 

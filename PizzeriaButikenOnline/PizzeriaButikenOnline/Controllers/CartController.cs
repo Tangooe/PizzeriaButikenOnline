@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Models;
-using PizzeriaButikenOnline.Repositories;
-using PizzeriaButikenOnline.ViewModels;
+using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.ViewModels;
+using PizzeriaButikenOnline.Persistence;
 
 namespace PizzeriaButikenOnline.Controllers
 {
@@ -11,14 +11,14 @@ namespace PizzeriaButikenOnline.Controllers
     {
         private readonly Cart _cart;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly UserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CartController(Cart cart, UserManager<ApplicationUser> userManager, UserRepository userRepository, IMapper mapper)
+        public CartController(Cart cart, UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _cart = cart;
             _userManager = userManager;
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -28,7 +28,7 @@ namespace PizzeriaButikenOnline.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var user = _userRepository.GetUser(_userManager.GetUserId(User));
+                var user = _unitOfWork.Users.GetUser(_userManager.GetUserId(User));
             
                 if(user != null)
                     checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
@@ -64,7 +64,7 @@ namespace PizzeriaButikenOnline.Controllers
             var checkoutForm = new CheckoutFormViewModel();
             if (User.Identity.IsAuthenticated)
             {
-                var user = _userRepository.GetUser(_userManager.GetUserId(User));
+                var user = _unitOfWork.Users.GetUser(_userManager.GetUserId(User));
                 checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
             }
 

@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PizzeriaButikenOnline.Core.Models;
+using PizzeriaButikenOnline.Core.Repositories;
 using PizzeriaButikenOnline.Data;
-using PizzeriaButikenOnline.Models;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Repositories
 {
-    public class CategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly ApplicationDbContext _context;
 
