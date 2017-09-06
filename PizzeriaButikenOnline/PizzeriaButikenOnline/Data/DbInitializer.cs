@@ -213,7 +213,7 @@ namespace PizzeriaButikenOnline.Data
                 PhoneNumber = "070 666 66 66",
                 StreetAddress = "Streetroad 1",
                 City = "Springfield",
-                ZipCode = 66666
+                ZipCode = "66666"
             };
 
             userManager.CreateAsync(user, "Abc!23");
@@ -227,7 +227,7 @@ namespace PizzeriaButikenOnline.Data
                 PhoneNumber = "070 666 66 66",
                 StreetAddress = "Streetroad 1",
                 City = "Springfield",
-                ZipCode = 66666
+                ZipCode = "66666"
             };
 
             userManager.CreateAsync(admin, "Abc!23");

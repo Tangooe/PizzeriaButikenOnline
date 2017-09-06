@@ -1,23 +1,25 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Repositories;
 using PizzeriaButikenOnline.ViewModels;
-using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
     public class CartController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly Cart _cart;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public CartController(ApplicationDbContext context, Cart cart, UserManager<ApplicationUser> userManager)
+        public CartController(Cart cart, UserManager<ApplicationUser> userManager, UserRepository userRepository, IMapper mapper)
         {
-            _context = context;
             _cart = cart;
             _userManager = userManager;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -26,18 +28,10 @@ namespace PizzeriaButikenOnline.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-
+                var user = _userRepository.GetUser(_userManager.GetUserId(User));
+            
                 if(user != null)
-                checkoutForm = new CheckoutFormViewModel
-                {
-                    Name = user.Name,
-                    StreetAddress = user.StreetAddress,
-                    City = user.City,
-                    ZipCode = user.ZipCode.ToString(),
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber
-                };
+                    checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
             }
 
             return View(new CartIndexViewModel
@@ -70,17 +64,8 @@ namespace PizzeriaButikenOnline.Controllers
             var checkoutForm = new CheckoutFormViewModel();
             if (User.Identity.IsAuthenticated)
             {
-                var user = _context.Users.FirstOrDefault(u => u.Id == _userManager.GetUserId(User));
-
-                checkoutForm = new CheckoutFormViewModel
-                {
-                    Name = user.Name,
-                    StreetAddress = user.StreetAddress,
-                    City = user.City,
-                    ZipCode = user.ZipCode.ToString(),
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber
-                };
+                var user = _userRepository.GetUser(_userManager.GetUserId(User));
+                checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
             }
 
             return View(nameof(Index), new CartIndexViewModel {Cart = _cart, CheckoutForm = checkoutForm });

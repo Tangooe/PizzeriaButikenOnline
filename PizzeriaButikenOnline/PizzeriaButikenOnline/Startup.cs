@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Persistence;
+using PizzeriaButikenOnline.Repositories;
 using PizzeriaButikenOnline.Services;
 
 namespace PizzeriaButikenOnline
@@ -39,6 +41,13 @@ namespace PizzeriaButikenOnline
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<DishRepository>();
+            services.AddTransient<CategoryRepository>();
+            services.AddTransient<IngredientRepository>();
+            services.AddTransient<UserRepository>();
+            services.AddTransient<DIshIngredientRepository>();
+            services.AddTransient<OrderRepository>();
+            services.AddTransient<UnitOfWork>();
 
             services.AddScoped(SessionCart.GetCart);
 

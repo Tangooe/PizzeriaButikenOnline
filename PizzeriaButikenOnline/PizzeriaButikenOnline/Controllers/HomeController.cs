@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PizzeriaButikenOnline.Data;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Persistence;
 using PizzeriaButikenOnline.ViewModels;
 using System.Diagnostics;
 using System.Linq;
@@ -9,63 +10,45 @@ namespace PizzeriaButikenOnline.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(UnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
+
+        //TODO: Clean this monstrosity up
         public IActionResult Index()
         {
-            var dishes = _context.Dishes
-                .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
-                .Include(d => d.Category)
-                .ToList();
+            var dishes = _unitOfWork.Dishes.GetAll().ToList();
+            var dishViewModels = dishes.Select(d => _mapper.Map<Dish, DishViewModel>(d)).ToList();
 
-            var dishViewModels = dishes.Select(dish => new DishViewModel
+            foreach (var dishViewModel in dishViewModels)
+            {
+                dishViewModel.Ingredients = _unitOfWork.Ingredients.GetAll()
+                    .Select(i => _mapper.Map<Ingredient, IngredientViewModel>(i))
+                    .OrderBy(i => i.Name)
+                    .ToList();
+
+                foreach (var ingredient in dishViewModel.Ingredients)
                 {
-                    Id = dish.Id,
-                    Name = dish.Name,
-                    Price = dish.Price,
-                    Category = dish.Category,
-                    Ingredients = _context.Ingredients.Select(i => new IngredientViewModel
-                    {
-                        Id = i.Id,
-                        Name = i.Name,
-                        Price = i.Price,
-                        IsSelected = dish.DishIngredients.Any(di => di.IngredientId == i.Id),
-                        IsDefault = dish.DishIngredients.Any(di => di.IngredientId == i.Id)
-                    }).OrderBy(i => i.Name).ToList()
-            }).ToList();
+                    ingredient.IsSelected = dishes.First(x => x.Id == dishViewModel.Id).DishIngredients
+                        .Any(di => di.IngredientId == ingredient.Id);
+                    ingredient.IsDefault = ingredient.IsSelected;
+                }
+            }
 
             var viewModel = new MenuViewModel
             {
                 Dishes = dishViewModels,
-                AllIngredients = _context.Ingredients.Select(i => new IngredientViewModel
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Price = i.Price
-                }).ToList(),
-                AllCategories =  _context.Categories.Include(c => c.Dishes).ToList(),
+                AllIngredients = _unitOfWork.Ingredients.GetAll().Select(i => _mapper.Map<Ingredient, IngredientViewModel>(i)).ToList(),
+                AllCategories =  _unitOfWork.Categories.GetAllWithDishes().ToList(),
                 ShowAdminActions = User.IsInRole("Admin")
             };
 
             return View(viewModel);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
         }
 
         public IActionResult Error()

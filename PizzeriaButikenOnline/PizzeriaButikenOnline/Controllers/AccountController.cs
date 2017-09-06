@@ -6,10 +6,10 @@ using Microsoft.Extensions.Logging;
 using PizzeriaButikenOnline.Extensions;
 using PizzeriaButikenOnline.Models;
 using PizzeriaButikenOnline.Services;
+using PizzeriaButikenOnline.ViewModels.AccountViewModels;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using PizzeriaButikenOnline.ViewModels.AccountViewModels;
 
 namespace PizzeriaButikenOnline.Controllers
 {
@@ -223,7 +223,7 @@ namespace PizzeriaButikenOnline.Controllers
                     Email = model.Email,
                     Name = model.Name,
                     StreetAddress = model.StreetAddress,
-                    PhoneNumber = model.PhoneNumber.ToString(),
+                    PhoneNumber = model.PhoneNumber,
                     ZipCode = model.ZipCode,
                     City = model.City
                 };

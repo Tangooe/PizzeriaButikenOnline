@@ -2,22 +2,21 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Persistence;
 using PizzeriaButikenOnline.ViewModels;
-using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
     [Authorize]
     public class IngredientController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public IngredientController(ApplicationDbContext context, IMapper mapper)
+        public IngredientController(UnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -28,15 +27,15 @@ namespace PizzeriaButikenOnline.Controllers
             if (!ModelState.IsValid)
                 return PartialView("Forms/IngredientFormPartial", viewModel);
 
-            _context.Ingredients.Add(_mapper.Map<IngredientFormViewModel, Ingredient>(viewModel));
-            _context.SaveChanges();
+            _unitOfWork.Ingredients.Add(_mapper.Map<IngredientFormViewModel, Ingredient>(viewModel));
+            _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Index), "Home");
         }
 
         public ActionResult Edit(int id)
         {
-            var ingredient = _context.Ingredients.Single(i => i.Id == id);
+            var ingredient = _unitOfWork.Ingredients.Get(id);
             var viewModel = _mapper.Map<Ingredient, IngredientFormViewModel>(ingredient);
 
             return View("Forms/IngredientFormPartial", viewModel);
@@ -49,8 +48,8 @@ namespace PizzeriaButikenOnline.Controllers
             if (!ModelState.IsValid)
                 return View("Forms/IngredientFormPartial");
 
-            _context.Ingredients.Single(i => i.Id == viewModel.Id).Update(viewModel);
-            _context.SaveChanges();
+            _unitOfWork.Ingredients.Get(viewModel.Id).Update(viewModel);
+            _unitOfWork.Complete();
 
             return RedirectToAction(nameof(Index), "Home");
         }
@@ -58,13 +57,13 @@ namespace PizzeriaButikenOnline.Controllers
         [HttpDelete("api/ingredients/{id:int}")]
         public ActionResult Delete(int id)
         {
-            var ingredient = _context.Ingredients.SingleOrDefault(i => i.Id == id);
+            var ingredient = _unitOfWork.Ingredients.Get(id);
 
             if (ingredient == null)
                 return NotFound();
 
-            _context.Ingredients.Remove(ingredient);
-            _context.SaveChanges();
+            _unitOfWork.Ingredients.Remove(ingredient);
+            _unitOfWork.Complete();
 
             return Ok();
         }

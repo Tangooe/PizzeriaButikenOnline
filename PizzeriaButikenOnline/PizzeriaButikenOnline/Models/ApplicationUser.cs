@@ -12,7 +12,7 @@ namespace PizzeriaButikenOnline.Models
         public string StreetAddress { get; set; }
 
         [Required]
-        public int ZipCode { get; set; }
+        public string ZipCode { get; set; }
 
         [Required]
         public string City { get; set; }

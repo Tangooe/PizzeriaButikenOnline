@@ -17,7 +17,7 @@ namespace PizzeriaButikenOnline.ViewModels.AccountViewModels
         [Required(ErrorMessage = "Postkod måste vara ifylld")]
         [Range(0,int.MaxValue)]
         [Display(Name = "Postkod")]
-        public int ZipCode { get; set; }
+        public string ZipCode { get; set; }
 
         [Required(ErrorMessage = "Staden måste vara ifylld")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Staden måste vara mellan 2-50 bokstäver")]
@@ -27,7 +27,7 @@ namespace PizzeriaButikenOnline.ViewModels.AccountViewModels
         [Required(ErrorMessage = "Telefonnummret måste vara ifylld")]
         [Phone(ErrorMessage = "Måste vara ett giltigt telefonnummer")]
         [Display(Name = "Telefonnummer")]
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email addressen måste vara ifylld")]
         [EmailAddress(ErrorMessage = "Måste vara en giltig email adress")]

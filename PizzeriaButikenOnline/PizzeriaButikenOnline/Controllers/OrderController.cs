@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PizzeriaButikenOnline.Data;
 using PizzeriaButikenOnline.Models;
+using PizzeriaButikenOnline.Persistence;
 using PizzeriaButikenOnline.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
@@ -11,14 +13,16 @@ namespace PizzeriaButikenOnline.Controllers
     public class OrderController : Controller
     {
         private readonly Cart _cart;
-        private readonly ApplicationDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public OrderController(Cart cart, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public OrderController(Cart cart, UnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _cart = cart;
-            _context = context;
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -32,28 +36,17 @@ namespace PizzeriaButikenOnline.Controllers
             {
                 DateTime = DateTime.Now,
                 Active = true,
-                OrderToken = Guid.NewGuid()
-        };
+                OrderToken = Guid.NewGuid(),
+                OrderDishes = new List<OrderDish>()
+            };
 
             if (viewModel.Delivery)
             {
                 if (User.Identity.IsAuthenticated)
                     order.UserId = _userManager.GetUserId(User);
                 else
-                    order.AnonymousUserInformation = new AnonymousUserInformation
-                    {
-                        Name = viewModel.Name,
-                        StreetAddress = viewModel.StreetAddress,
-                        ZipCode = viewModel.ZipCode,
-                        City = viewModel.City,
-                        PhoneNumber = viewModel.PhoneNumber,
-                        Email = viewModel.Email,
-                        PaymentMethod = viewModel.PaymentMenthods.First(pm => pm.Id == viewModel.PaymentMethod).Name
-                    };
+                    order.AnonymousUserInformation = _mapper.Map<CheckoutFormViewModel, AnonymousUserInformation>(viewModel);
             }
-
-            _context.Orders.Add(order);
-            _context.SaveChanges();
 
             foreach (var line in _cart.Lines)
             {
@@ -61,20 +54,19 @@ namespace PizzeriaButikenOnline.Controllers
                 {
                     Quantity = line.Quantity,
                     DishId = line.Dish.Id,
-                    OrderId = order.Id
+                    OrderId = order.Id,
+                    OrderDishIngredients = line.Dish.Ingredients.Where(i => i.IsSelected).Select(i => new OrderDishIngredient
+                    {
+                        OrderDishId = line.Dish.Id,
+                        IngredientId = i.Id
+                    }).ToList()
                 };
 
-                _context.OrderDishes.Add(orderDish);
-                _context.SaveChanges();
-
-                _context.OrderDishIngredients.AddRange(line.Dish.Ingredients.Where(i => i.IsSelected).Select(i => new OrderDishIngredient
-                {
-                    OrderDishId = orderDish.Id,
-                    IngredientId = i.Id
-                }).ToList());
+                order.OrderDishes.Add(orderDish);
             }
 
-            _context.SaveChanges();
+            _unitOfWork.Orders.Add(order);
+            _unitOfWork.Complete();
 
             _cart.Clear();
             return RedirectToActionPermanent(nameof(CheckoutCompleted), new { token = order.OrderToken });
@@ -83,7 +75,7 @@ namespace PizzeriaButikenOnline.Controllers
         [Route("Order/Checkout/{token:guid}")]
         public IActionResult CheckoutCompleted(Guid token)
         {
-            var order = _context.Orders.FirstOrDefault(o => o.Active && o.OrderToken == token);
+            var order = _unitOfWork.Orders.GetActiveOrder(token);
             if (order == null)
                 return NotFound();
 

@@ -15,9 +15,15 @@ namespace PizzeriaButikenOnline
 
             CreateMap<DishFormViewModel, Dish>();
             CreateMap<Dish, DishFormViewModel>();
+            CreateMap<Dish, DishViewModel>();
+
+            CreateMap<DishIngredient, IngredientViewModel>();
 
             CreateMap<CategoryFormViewModel, Category>();
             CreateMap<Category, CategoryFormViewModel>();
+
+            CreateMap<ApplicationUser, CheckoutFormViewModel>();
+            CreateMap<CheckoutFormViewModel, AnonymousUserInformation>();
         }
     }
 }
