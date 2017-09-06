@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
-using PizzeriaButikenOnline.Persistence;
 using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers

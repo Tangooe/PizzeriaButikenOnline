@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
-using PizzeriaButikenOnline.Persistence;
 using System.Diagnostics;
 using System.Linq;
 

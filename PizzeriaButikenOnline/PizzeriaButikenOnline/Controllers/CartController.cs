@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
-using PizzeriaButikenOnline.Persistence;
 
 namespace PizzeriaButikenOnline.Controllers
 {

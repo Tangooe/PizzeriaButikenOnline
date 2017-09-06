@@ -1,5 +1,6 @@
-﻿using PizzeriaButikenOnline.Data;
-using PizzeriaButikenOnline.Repositories;
+﻿using PizzeriaButikenOnline.Core;
+using PizzeriaButikenOnline.Core.Repositories;
+using PizzeriaButikenOnline.Data;
 
 namespace PizzeriaButikenOnline.Persistence
 {

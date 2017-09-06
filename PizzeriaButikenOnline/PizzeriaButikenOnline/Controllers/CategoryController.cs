@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PizzeriaButikenOnline.Persistence;
-using System.Linq;
+using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
+using System.Linq;
 
 namespace PizzeriaButikenOnline.Controllers
 {
