@@ -1,6 +1,6 @@
-﻿using PizzeriaButikenOnline.Core.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using PizzeriaButikenOnline.Core.ViewModels;
 
 namespace PizzeriaButikenOnline.Core.Models
 {

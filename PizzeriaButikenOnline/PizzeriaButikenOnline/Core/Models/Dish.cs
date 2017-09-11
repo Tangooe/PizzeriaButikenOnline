@@ -1,7 +1,7 @@
-﻿using PizzeriaButikenOnline.Core.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using PizzeriaButikenOnline.Core.ViewModels;
 
 namespace PizzeriaButikenOnline.Core.Models
 {
@@ -31,7 +31,7 @@ namespace PizzeriaButikenOnline.Core.Models
             Name = viewModel.Name;
             Price = viewModel.Price;
             CategoryId = viewModel.CategoryId;
-            DishIngredients = Enumerable.Where(viewModel.Ingredients, i => i.IsSelected)
+            DishIngredients = viewModel.Ingredients.Where(i => i.IsSelected)
                 .Select(i => new DishIngredient
                 {
                     IngredientId = i.Id,

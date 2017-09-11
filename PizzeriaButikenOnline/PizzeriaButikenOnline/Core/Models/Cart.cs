@@ -1,6 +1,6 @@
-﻿using PizzeriaButikenOnline.Core.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using PizzeriaButikenOnline.Core.ViewModels;
 
 namespace PizzeriaButikenOnline.Core.Models
 {
@@ -10,7 +10,7 @@ namespace PizzeriaButikenOnline.Core.Models
 
         public virtual void AdjustQuantity(int lineId , int quantity)
         {
-            var line = Enumerable.First(_lineCollection, lc => lc.Id == lineId);
+            var line = _lineCollection.First(lc => lc.Id == lineId);
             line.Quantity += quantity;
 
             if (line.Quantity <= 0)
@@ -19,24 +19,13 @@ namespace PizzeriaButikenOnline.Core.Models
 
         public virtual void AddItem(DishViewModel dish, int quantity)
         {
-            var line = Enumerable.FirstOrDefault(_lineCollection, lc =>
-                lc.Dish.Id == dish.Id &&
-                Enumerable.Select(lc.Dish.Ingredients, si => si.IsSelected).SequenceEqual<bool>(Enumerable.Select(dish.Ingredients, i => i.IsSelected)));
-
-            if (line == null)
+            dish.Price += dish.Ingredients.Where(i => !i.IsDefault && i.IsSelected).Sum(i => i.Price);
+            _lineCollection.Add(new CartLine
             {
-                dish.Price += Enumerable.Where(dish.Ingredients, i => !i.IsDefault && i.IsSelected).Sum(i => i.Price);
-                _lineCollection.Add(new CartLine
-                {
-                    Id = _lineCollection.Count + 1,
-                    Dish = dish,
-                    Quantity = quantity       
-                });
-            }
-            else
-            {
-                line.Quantity += quantity;
-            }
+                Id = _lineCollection.Count + 1,
+                Dish = dish,
+                Quantity = quantity       
+            });
         }
 
         public virtual void RemoveLine(int lineId) => 
