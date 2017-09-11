@@ -1,0 +1,36 @@
+﻿@model CartLine
+
+<tr>
+    <td class="text-left">        
+        <a asp-controller="Cart" asp-action="AdjustQuantity" asp-route-lineId="@Model.Id" asp-route-quantity="-1"><i class="quantity-button glyphicon glyphicon-minus"></i></a>
+        <b> @Model.Quantity </b>
+        <a asp-controller="Cart" asp-action="AdjustQuantity" asp-route-lineId="@Model.Id" asp-route-quantity="1"><i class="quantity-button glyphicon glyphicon-plus"></i></a>
+    </td>
+    <td class="text-left">
+        <div class="dish-name">
+            <b>@Model.Dish.Name </b><i class="small-font text-warning glyphicon glyphicon-pencil"></i>
+        </div>
+        <div>
+            <a class="text-muted text-capitalize" data-toggle="collapse" data-target="#ingredients-panel-@Model.Id">
+                @string.Join(", ", Model.Dish.Ingredients.Where(i => i.IsSelected).Select(i => i.Name))
+            </a>
+            <div id="ingredients-panel-@Model.Id" class="collapse" >
+                <div class="form-group">
+                    <ul class="checkbox-grid">
+                        @{
+                            foreach (var ingredient in Model.Dish.Ingredients.ToList())
+                            {
+                                <li>
+                                    <input asp-for="@ingredient.IsSelected" type="checkbox"/>
+                                    <label asp-for="@ingredient.IsSelected">@ingredient.Name</label>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td class="text-right">@Model.Dish.Price:-</td>
+    <td class="text-right">@(Model.Quantity * Model.Dish.Price):-</td>
+</tr>

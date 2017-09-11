@@ -57,6 +57,14 @@ namespace PizzeriaButikenOnline.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IActionResult ToggleDishIngredient(int lineId, int ingredientId)
+        {
+            _cart.ToggleDishIngredient(lineId, ingredientId);
+
+            return Ok();
+        }
+
         //TODO: AJAX this 
         public IActionResult AdjustQuantity(int lineId, int quantity)
         {

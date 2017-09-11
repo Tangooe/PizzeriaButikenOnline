@@ -4,7 +4,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    var dishes = Model.Cart.Lines.Select(l => l.Dish).ToList();
 }
 
 <h2>Din Kundvagn</h2>
@@ -21,51 +20,12 @@
     <tbody>
     @foreach (var line in Model.Cart.Lines)
     {
-        <tr>
-            <td class="text-left">        
-                <a asp-action="AdjustQuantity" asp-route-lineId="@line.Id" asp-route-quantity="-1"><i class="quantity-button glyphicon glyphicon-minus"></i></a>
-                <b> @line.Quantity </b>
-                <a asp-action="AdjustQuantity" asp-route-lineId="@line.Id" asp-route-quantity="1"><i class="quantity-button glyphicon glyphicon-plus"></i></a>
-            </td>
-            <td class="text-left">
-                <div class="dish-name">
-                    <b>@line.Dish.Name </b><i class="small-font text-warning glyphicon glyphicon-pencil"></i>
-                </div>
-                <div>
-                    <a class="text-muted text-capitalize" data-toggle="collapse" data-target="#ingredients-panel-@line.Id">
-                        @string.Join(", ", line.Dish.Ingredients.Where(i => i.IsSelected).Select(i => i.Name))
-                    </a>
-                    <div id="ingredients-panel-@line.Id" class="collapse" >
-                        <div class="form-group">
-                            <ul class="checkbox-grid">
-                                @{
-                                    var ingredients = dishes.First(d => d.Id == line.Dish.Id).Ingredients.ToList();
-                                    for (var i = 0; i < ingredients.Count; i++)
-                                    {
-                                        <li>
-                                            <input asp-for="@ingredients[i].IsSelected" type="checkbox"/>
-                                            <label asp-for="@ingredients[i].IsSelected">@ingredients[i].Name</label>
-
-                                            @Html.HiddenFor(x => ingredients[i].Id)
-                                            @Html.HiddenFor(x => ingredients[i].Name)
-                                        </li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td class="text-right">@line.Dish.Price:-</td>
-            <td class="text-right">@(line.Quantity * line.Dish.Price):-</td>
-        </tr>
+        @Html.Partial("CartLineSummary", line)
     }
     @for(var i = Model.Cart.Lines.Count(); i < 5; i++)
     {
         <tr>
-            <td colspan="5" class="cart-empty-row">
-                
-            </td>
+            <td colspan="5" class="cart-empty-row"></td>
         </tr>
     }
     </tbody>

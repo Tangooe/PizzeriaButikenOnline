@@ -39,5 +39,18 @@ namespace PizzeriaButikenOnline.Core.Models
 
         public virtual IEnumerable<CartLine> Lines => 
             _lineCollection;
+
+        public void ToggleDishIngredient(int lineId, int ingredientId)
+        {
+            var ingredient = _lineCollection
+                .FirstOrDefault(lc => lc.Id == lineId)?
+                .Dish.Ingredients
+                .FirstOrDefault(d => d.Id == ingredientId);
+
+            if(ingredient == null)
+                return;
+
+            ingredient.IsSelected = !ingredient.IsSelected;
+        }
     }
 }
