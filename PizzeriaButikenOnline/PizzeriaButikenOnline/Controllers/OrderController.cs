@@ -52,7 +52,7 @@ namespace PizzeriaButikenOnline.Controllers
             {
                 var orderDish = new OrderDish
                 {
-                    Quantity = line.Quantity,
+                    //Quantity = line.Quantity,
                     DishId = line.Dish.Id,
                     OrderId = order.Id,
                     OrderDishIngredients = line.Dish.Ingredients.Where(i => i.IsSelected).Select(i => new OrderDishIngredient

@@ -8,14 +8,14 @@ namespace PizzeriaButikenOnline.Core.Models
     {
         private readonly List<CartLine> _lineCollection = new List<CartLine>();
 
-        public virtual void AdjustQuantity(int lineId , int quantity)
-        {
-            var line = _lineCollection.First(lc => lc.Id == lineId);
-            line.Quantity += quantity;
+        //public virtual void AdjustQuantity(int lineId , int quantity)
+        //{
+        //    var line = _lineCollection.First(lc => lc.Id == lineId);
+        //    line.Quantity += quantity;
 
-            if (line.Quantity <= 0)
-                RemoveLine(line.Id);
-        }
+        //    if (line.Quantity <= 0)
+        //        RemoveLine(line.Id);
+        //}
 
         public virtual void AddItem(DishViewModel dish, int quantity)
         {
@@ -24,7 +24,7 @@ namespace PizzeriaButikenOnline.Core.Models
             {
                 Id = _lineCollection.Count + 1,
                 Dish = dish,
-                Quantity = quantity       
+                //Quantity = quantity       
             });
         }
 
@@ -32,7 +32,7 @@ namespace PizzeriaButikenOnline.Core.Models
             _lineCollection.RemoveAll(lc => lc.Id == lineId);
 
         public virtual decimal ComputeTotalValue() => 
-            _lineCollection.Sum(lc => lc.Dish.Price * lc.Quantity);
+            _lineCollection.Sum(lc => lc.Dish.Price);
 
         public virtual void Clear() => 
             _lineCollection.Clear();
@@ -40,17 +40,30 @@ namespace PizzeriaButikenOnline.Core.Models
         public virtual IEnumerable<CartLine> Lines => 
             _lineCollection;
 
-        public void ToggleDishIngredient(int lineId, int ingredientId)
-        {
-            var ingredient = _lineCollection
-                .FirstOrDefault(lc => lc.Id == lineId)?
-                .Dish.Ingredients
-                .FirstOrDefault(d => d.Id == ingredientId);
+        //public void ToggleDishIngredient(int lineId, int ingredientId)
+        //{
+        //    var ingredient = _lineCollection
+        //        .FirstOrDefault(lc => lc.Id == lineId)?
+        //        .Dish.Ingredients
+        //        .FirstOrDefault(d => d.Id == ingredientId);
 
-            if(ingredient == null)
+        //    if(ingredient == null)
+        //        return;
+
+        //    ingredient.IsSelected = !ingredient.IsSelected;
+        //}
+
+        public virtual void UpdateCartLine(CartLine cartLine)
+        {
+            var dish = _lineCollection.FirstOrDefault(lc => lc.Id == cartLine.Id)?.Dish;
+
+            if(dish == null)
                 return;
 
-            ingredient.IsSelected = !ingredient.IsSelected;
+            foreach (var ingredient in cartLine.Dish.Ingredients)
+            {
+                dish.Ingredients.First(i => i.Id == ingredient.Id).IsSelected = ingredient.IsSelected;
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking;
 using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
@@ -58,17 +61,11 @@ namespace PizzeriaButikenOnline.Controllers
         }
 
         [HttpPost]
-        public IActionResult ToggleDishIngredient(int lineId, int ingredientId)
+        public IActionResult UpdateCartLine(CartLine cartLine)
         {
-            _cart.ToggleDishIngredient(lineId, ingredientId);
+            _cart.UpdateCartLine(cartLine);
 
-            return Ok();
-        }
-
-        //TODO: AJAX this 
-        public IActionResult AdjustQuantity(int lineId, int quantity)
-        {
-            _cart.AdjustQuantity(lineId, quantity);
+            return PartialView("CartLineSummary", cartLine);
             var checkoutForm = new CheckoutFormViewModel();
             if (User.Identity.IsAuthenticated)
             {
@@ -76,7 +73,29 @@ namespace PizzeriaButikenOnline.Controllers
                 checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
             }
 
-            return View(nameof(Index), new CartIndexViewModel {Cart = _cart, CheckoutForm = checkoutForm });
+            return View(nameof(Index), new CartIndexViewModel { Cart = _cart, CheckoutForm = checkoutForm });
         }
+
+        //[HttpPost]
+        //public IActionResult ToggleDishIngredient(int lineId, int ingredientId)
+        //{
+        //    _cart.ToggleDishIngredient(lineId, ingredientId);
+
+        //    return Ok();
+        //}
+
+        //TODO: AJAX this 
+        //public IActionResult AdjustQuantity(int lineId, int quantity)
+        //{
+        //    _cart.AdjustQuantity(lineId, quantity);
+        //    var checkoutForm = new CheckoutFormViewModel();
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        var user = _unitOfWork.Users.GetUser(_userManager.GetUserId(User));
+        //        checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
+        //    }
+
+        //    return View(nameof(Index), new CartIndexViewModel {Cart = _cart, CheckoutForm = checkoutForm });
+        //}
     }
 }

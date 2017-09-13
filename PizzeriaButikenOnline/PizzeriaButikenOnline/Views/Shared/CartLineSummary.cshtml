@@ -1,36 +1,43 @@
 ﻿@model CartLine
 
-<tr>
-    <td class="text-left">        
-        <a asp-controller="Cart" asp-action="AdjustQuantity" asp-route-lineId="@Model.Id" asp-route-quantity="-1"><i class="quantity-button glyphicon glyphicon-minus"></i></a>
-        <b> @Model.Quantity </b>
-        <a asp-controller="Cart" asp-action="AdjustQuantity" asp-route-lineId="@Model.Id" asp-route-quantity="1"><i class="quantity-button glyphicon glyphicon-plus"></i></a>
-    </td>
-    <td class="text-left">
-        <div class="dish-name">
-            <b>@Model.Dish.Name </b><i class="small-font text-warning glyphicon glyphicon-pencil"></i>
-        </div>
-        <div>
-            <a class="text-muted text-capitalize" data-toggle="collapse" data-target="#ingredients-panel-@Model.Id">
-                @string.Join(", ", Model.Dish.Ingredients.Where(i => i.IsSelected).Select(i => i.Name))
-            </a>
-            <div id="ingredients-panel-@Model.Id" class="collapse" >
+@*<td class="text-left">        
+    <a asp-controller="Cart" asp-action="AdjustQuantity" asp-route-lineId="@Model.Id" asp-route-quantity="-1"><i class="quantity-button glyphicon glyphicon-minus"></i></a>
+    <b> @Model.Quantity </b>
+    <a asp-controller="Cart" asp-action="AdjustQuantity" asp-route-lineId="@Model.Id" asp-route-quantity="1"><i class="quantity-button glyphicon glyphicon-plus"></i></a>
+</td>*@
+
+<td class="text-left">
+    <div class="dish-name">
+        <b>@Model.Dish.Name </b><i class="small-font text-warning glyphicon glyphicon-pencil"></i>
+    </div>
+    <div>
+        <a class="text-muted text-capitalize" data-toggle="collapse" data-target="#ingredients-panel-@Model.Id">
+            @string.Join(", ", Model.Dish.Ingredients.Where(i => i.IsSelected).Select(i => i.Name))
+        </a>
+        <div id="ingredients-panel-@Model.Id" class="collapse">
+            <form id="@Model.Id" asp-controller="Cart" asp-action="UpdateCartLine" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cartline-@Model.Id">          
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Dish.Id)
+                @Html.HiddenFor(x => x.Dish.Name)
+                @Html.HiddenFor(x => x.Dish.Price)
                 <div class="form-group">
                     <ul class="checkbox-grid">
-                        @{
-                            foreach (var ingredient in Model.Dish.Ingredients.ToList())
-                            {
-                                <li>
-                                    <input asp-for="@ingredient.IsSelected" type="checkbox"/>
-                                    <label asp-for="@ingredient.IsSelected">@ingredient.Name</label>
-                                </li>
-                            }
+                        @for (var i = 0; i < Model.Dish.Ingredients.Count; i++)
+                        {
+                            <li>
+                                <input asp-for="@Model.Dish.Ingredients[i].IsSelected" type="checkbox"/>
+                                <label asp-for="@Model.Dish.Ingredients[i].IsSelected">@Model.Dish.Ingredients[i].Name</label>
+
+                                @Html.HiddenFor(x => Model.Dish.Ingredients[i].Id)
+                                @Html.HiddenFor(x => Model.Dish.Ingredients[i].Name)
+                                @Html.HiddenFor(x => Model.Dish.Ingredients[i].Price)
+                            </li>
                         }
                     </ul>
+                    <button type="submit" class="btn btn-default btn-lg center-block">Updatera</button>
                 </div>
-            </div>
+            </form>
         </div>
-    </td>
-    <td class="text-right">@Model.Dish.Price:-</td>
-    <td class="text-right">@(Model.Quantity * Model.Dish.Price):-</td>
-</tr>
+    </div>
+</td>
+<td class="text-right">@Model.ComputeLinePrice():-</td>

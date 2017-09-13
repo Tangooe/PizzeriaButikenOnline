@@ -1,4 +1,5 @@
-﻿using PizzeriaButikenOnline.Core.ViewModels;
+﻿using System.Linq;
+using PizzeriaButikenOnline.Core.ViewModels;
 
 namespace PizzeriaButikenOnline.Core.Models
 {
@@ -6,6 +7,8 @@ namespace PizzeriaButikenOnline.Core.Models
     {
         public int Id { get; set; }
         public DishViewModel Dish { get; set; }
-        public int Quantity { get; set; }
+
+        public virtual decimal ComputeLinePrice() =>
+            Dish.Price + Dish.Ingredients.Where(i => !i.IsDefault && i.IsSelected).Sum(i => i.Price);
     }
 }

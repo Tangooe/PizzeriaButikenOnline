@@ -1,4 +1,5 @@
-﻿namespace PizzeriaButikenOnline.Core.ViewModels
+﻿
+namespace PizzeriaButikenOnline.Core.ViewModels
 {
     public class PaymentViewModel
     {

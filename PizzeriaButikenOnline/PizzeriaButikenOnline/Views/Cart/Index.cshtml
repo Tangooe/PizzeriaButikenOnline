@@ -11,18 +11,19 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th class="text-left">Antal</th>
         <th class="text-left">Maträtt</th>
         <th class="text-right">Pris</th>
-        <th class="text-right">Totalt</th>
+        @*<th class="text-right">Totalt</th>*@
     </tr>
     </thead>
     <tbody>
     @foreach (var line in Model.Cart.Lines)
     {
-        @Html.Partial("CartLineSummary", line)
+        <tr id="cartline-@line.Id">
+            @Html.Partial("CartLineSummary", line)
+        </tr>
     }
-    @for(var i = Model.Cart.Lines.Count(); i < 5; i++)
+    @for (var i = Model.Cart.Lines.Count(); i < 5; i++)
     {
         <tr>
             <td colspan="5" class="cart-empty-row"></td>
@@ -32,7 +33,7 @@
     <tfoot>
     <tr>
         <td colspan="1"><a class=" btn btn-primary" asp-action="Index" asp-controller="Home"><i class="glyphicon glyphicon-arrow-left"></i> Fortsätt att handla</a></td>
-        <td colspan="3" class="text-right">@Model.Cart.ComputeTotalValue():-</td>
+        @*<td colspan="2" class="text-right">@Model.Cart.ComputeTotalValue():-</td>*@
     </tr>
     </tfoot>
 </table>

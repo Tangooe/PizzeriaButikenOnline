@@ -5,7 +5,7 @@
         <i class="cart-icon glyphicon glyphicon-shopping-cart"></i>
         @if (Model.Lines.Any())
         {
-            <span>@Model.Lines.Sum(l => l.Quantity)st @Model.ComputeTotalValue():-</span>
+            <span>@Model.Lines.Count()st @Model.Lines.Sum(l => l.ComputeLinePrice()):-</span>
         }
     </a>
 </div>
