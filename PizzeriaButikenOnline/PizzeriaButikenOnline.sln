@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzeriaButikenOnline", "PizzeriaButikenOnline\PizzeriaButikenOnline.csproj", "{09EE55E0-60B3-494B-9105-4F43730F75BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaButikenOnline", "PizzeriaButikenOnline\PizzeriaButikenOnline.csproj", "{09EE55E0-60B3-494B-9105-4F43730F75BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzeriaButikenOnline.Test", "PizzeriaButikenOnline.Test\PizzeriaButikenOnline.Test.csproj", "{1DCC942E-9424-41AC-B78B-A0EA12E04873}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{09EE55E0-60B3-494B-9105-4F43730F75BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09EE55E0-60B3-494B-9105-4F43730F75BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09EE55E0-60B3-494B-9105-4F43730F75BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DCC942E-9424-41AC-B78B-A0EA12E04873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DCC942E-9424-41AC-B78B-A0EA12E04873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DCC942E-9424-41AC-B78B-A0EA12E04873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DCC942E-9424-41AC-B78B-A0EA12E04873}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
