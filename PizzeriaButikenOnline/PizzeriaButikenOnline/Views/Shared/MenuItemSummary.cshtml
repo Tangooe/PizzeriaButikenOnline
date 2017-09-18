@@ -24,7 +24,7 @@
         }
         <div class="dish-price">
             <button type="submit" class="btn btn-link">
-                <span>@Math.Round(Model.Price,0):- <i class="text-success glyphicon glyphicon-shopping-cart"></i></span>
+                <span>@Math.Round(Model.Price, 0):- <i class="text-success glyphicon glyphicon-shopping-cart"></i></span>
             </button>
         </div>
         @if (Model.Ingredients.Any(x => x.IsSelected))

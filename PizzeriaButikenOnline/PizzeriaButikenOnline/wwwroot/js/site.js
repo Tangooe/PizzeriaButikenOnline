@@ -124,5 +124,5 @@
 
     return {
         init: init
-    }
+    };
 }();

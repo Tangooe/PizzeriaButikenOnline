@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.AzureAppServices;
 using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.Repositories;
@@ -18,8 +20,11 @@ namespace PizzeriaButikenOnline
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
+            _environment = environment;
             Configuration = configuration;
         }
 
@@ -28,9 +33,10 @@ namespace PizzeriaButikenOnline
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+            if(_environment.IsProduction() || _environment.IsStaging())
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            else
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase("DefaultConnection"));
 
@@ -60,9 +66,16 @@ namespace PizzeriaButikenOnline
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationDbContext context, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
+            if (_environment.IsProduction())
+                loggerFactory.AddAzureWebAppDiagnostics(
+                    new AzureAppServicesDiagnosticsSettings
+                    {
+                        OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss zzz} [{Level}] {RequestId}-{SourceContext}: {Message}{NewLine}{Exception}"
+                    });
+
+            if (_environment.IsDevelopment() || _environment.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
@@ -85,6 +98,9 @@ namespace PizzeriaButikenOnline
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            if (_environment.IsProduction() || _environment.IsStaging())
+                context.Database.Migrate();
 
             DbInitializer.Initialize(context, userManager, roleManager);
         }

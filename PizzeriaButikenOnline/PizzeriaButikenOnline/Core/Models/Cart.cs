@@ -19,7 +19,6 @@ namespace PizzeriaButikenOnline.Core.Models
 
         public virtual void AddItem(DishViewModel dish, int quantity)
         {
-            dish.Price += dish.Ingredients.Where(i => !i.IsDefault && i.IsSelected).Sum(i => i.Price);
             _lineCollection.Add(new CartLine
             {
                 Id = _lineCollection.Count + 1,
@@ -32,7 +31,7 @@ namespace PizzeriaButikenOnline.Core.Models
             _lineCollection.RemoveAll(lc => lc.Id == lineId);
 
         public virtual decimal ComputeTotalValue() => 
-            _lineCollection.Sum(lc => lc.Dish.Price);
+            _lineCollection.Sum(lc => lc.ComputeLinePrice());
 
         public virtual void Clear() => 
             _lineCollection.Clear();

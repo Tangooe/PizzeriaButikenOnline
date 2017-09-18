@@ -15,7 +15,7 @@
             @string.Join(", ", Model.Dish.Ingredients.Where(i => i.IsSelected).Select(i => i.Name))
         </a>
         <div id="ingredients-panel-@Model.Id" class="collapse">
-            <form id="@Model.Id" asp-controller="Cart" asp-action="UpdateCartLine" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cartline-@Model.Id">          
+            <form id="@Model.Id" asp-controller="Cart" asp-action="UpdateCartLine" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update=".cartline-@Model.Id">          
                 @Html.HiddenFor(x => x.Id)
                 @Html.HiddenFor(x => x.Dish.Id)
                 @Html.HiddenFor(x => x.Dish.Name)
@@ -31,6 +31,7 @@
                                 @Html.HiddenFor(x => Model.Dish.Ingredients[i].Id)
                                 @Html.HiddenFor(x => Model.Dish.Ingredients[i].Name)
                                 @Html.HiddenFor(x => Model.Dish.Ingredients[i].Price)
+                                @Html.HiddenFor(x => Model.Dish.Ingredients[i].IsDefault)
                             </li>
                         }
                     </ul>
