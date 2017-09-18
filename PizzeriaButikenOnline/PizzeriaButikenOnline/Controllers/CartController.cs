@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking;
+using Microsoft.Extensions.Logging;
 using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
@@ -16,9 +14,11 @@ namespace PizzeriaButikenOnline.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(Cart cart, UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IMapper mapper)
+        public CartController(Cart cart, UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IMapper mapper, ILogger<CartController> logger)
         {
+            _logger = logger;
             _cart = cart;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
@@ -31,6 +31,7 @@ namespace PizzeriaButikenOnline.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
+                _logger.LogInformation("Gets user data from database");
                 var user = _unitOfWork.Users.GetUser(_userManager.GetUserId(User));
             
                 if(user != null)
@@ -47,55 +48,27 @@ namespace PizzeriaButikenOnline.Controllers
         [HttpPost]
         public IActionResult AddToCart(DishViewModel viewModel)
         {
+            _logger.LogInformation($"Adds {viewModel.Name} to the cart");
             _cart.AddItem(viewModel, 1);
 
             return PartialView(@"Components/CartSummary/Default", _cart);
         }
 
-        [HttpPost]
+        [HttpDelete("api/cart/removeline/{lineId:int}")]
         public IActionResult RemoveFromCart(int lineId)
         {
+            _logger.LogInformation("removes an item from the cart");
             _cart.RemoveLine(lineId);
-
             return Ok();
         }
 
         [HttpPost]
         public IActionResult UpdateCartLine(CartLine cartLine)
         {
+            _logger.LogInformation("Updates cartline a cartline with new ingredients");
             _cart.UpdateCartLine(cartLine);
 
             return PartialView("CartLineSummary", cartLine);
-            var checkoutForm = new CheckoutFormViewModel();
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = _unitOfWork.Users.GetUser(_userManager.GetUserId(User));
-                checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
-            }
-
-            return View(nameof(Index), new CartIndexViewModel { Cart = _cart, CheckoutForm = checkoutForm });
         }
-
-        //[HttpPost]
-        //public IActionResult ToggleDishIngredient(int lineId, int ingredientId)
-        //{
-        //    _cart.ToggleDishIngredient(lineId, ingredientId);
-
-        //    return Ok();
-        //}
-
-        //TODO: AJAX this 
-        //public IActionResult AdjustQuantity(int lineId, int quantity)
-        //{
-        //    _cart.AdjustQuantity(lineId, quantity);
-        //    var checkoutForm = new CheckoutFormViewModel();
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        var user = _unitOfWork.Users.GetUser(_userManager.GetUserId(User));
-        //        checkoutForm = _mapper.Map<ApplicationUser, CheckoutFormViewModel>(user);
-        //    }
-
-        //    return View(nameof(Index), new CartIndexViewModel {Cart = _cart, CheckoutForm = checkoutForm });
-        //}
     }
 }

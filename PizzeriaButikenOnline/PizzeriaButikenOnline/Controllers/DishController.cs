@@ -6,6 +6,7 @@ using PizzeriaButikenOnline.Core;
 using PizzeriaButikenOnline.Core.Models;
 using PizzeriaButikenOnline.Core.ViewModels;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace PizzeriaButikenOnline.Controllers
 {
@@ -14,9 +15,11 @@ namespace PizzeriaButikenOnline.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<DishController> _logger;
 
-        public DishController(IMapper mapper, IUnitOfWork unitOfWork)
+        public DishController(IMapper mapper, IUnitOfWork unitOfWork, ILogger<DishController> logger)
         {
+            _logger = logger;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
@@ -84,7 +87,6 @@ namespace PizzeriaButikenOnline.Controllers
 
             var dish = _unitOfWork.Dishes.GetAll().Single(d => d.Id == viewModel.Id);
 
-            // TODO: Learn how to make the update work without these two lines (conflicting primary keys)
             _unitOfWork.DishIngredients.RemoveRange(dish.DishIngredients);
             _unitOfWork.Complete();
 

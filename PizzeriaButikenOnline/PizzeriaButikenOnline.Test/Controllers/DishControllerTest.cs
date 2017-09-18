@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PizzeriaButikenOnline.Controllers;
@@ -18,10 +19,11 @@ namespace PizzeriaButikenOnline.Test.Controllers
         {
             var mockRepository = new Mock<IDishRepository>();
             var mockUoW = new Mock<IUnitOfWork>();
+            var mockLogger = new Mock<ILogger<DishController>>();
             mockUoW.SetupGet(u => u.Dishes).Returns(mockRepository.Object);
 
             var mockMapper = new Mock<IMapper>();
-            _controller = new DishController(mockMapper.Object, mockUoW.Object);
+            _controller = new DishController(mockMapper.Object, mockUoW.Object, mockLogger.Object);
         }
 
         [TestMethod]

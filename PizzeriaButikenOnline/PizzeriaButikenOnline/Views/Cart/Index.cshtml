@@ -13,6 +13,7 @@
     <tr>
         <th class="text-left">Maträtt</th>
         <th class="text-right">Pris</th>
+        <th></th>
         @*<th class="text-right">Totalt</th>*@
     </tr>
     </thead>
@@ -40,3 +41,11 @@
 <div>
     @Html.Partial("Forms/CheckoutFormPartial", Model.CheckoutForm)
 </div>
+
+@section Scripts {
+<script>
+        $(document).ready(function () {
+            CartController.init();
+        });
+</script>
+}

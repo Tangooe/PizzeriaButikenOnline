@@ -126,3 +126,33 @@
         init: init
     };
 }();
+
+var CartController = function()
+{
+    var deleteCartline = function () {
+        $(".js-delete-cartline").click(function (e) {
+            var link = $(e.target);
+            var linkId = link.attr("data-cartline-id");
+
+            $.ajax({
+                    url: "/api/cart/removeline/" + linkId,
+                    method: "DELETE"
+                })
+                .done(function() {
+                    link.parents("tr").fadeOut(function() {
+                        $(this).remove();
+                    });
+                })
+                .fail(function () {
+                    alert("Something failed");
+                });
+        });
+
+    var init= function() {
+        $(".js-delete-cartline").click(deleteCartline);
+    }
+
+    return {
+        init: init
+    };
+}();

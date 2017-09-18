@@ -42,3 +42,8 @@
     </div>
 </td>
 <td class="text-right">@Model.ComputeLinePrice():-</td>
+<td class="text-right">
+    <a data-id="@Model.Id" class="js-delete-cartline">
+        <i data-cartline-id="@Model.Id" class="text-danger glyphicon glyphicon-remove"></i>
+    </a>
+</td>

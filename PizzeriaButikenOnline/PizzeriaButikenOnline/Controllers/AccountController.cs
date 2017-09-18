@@ -75,7 +75,7 @@ namespace PizzeriaButikenOnline.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Misslyckades att logga in");
                     return View(model);
                 }
             }
