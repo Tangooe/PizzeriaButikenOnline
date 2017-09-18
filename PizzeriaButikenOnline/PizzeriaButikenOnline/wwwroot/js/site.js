@@ -129,8 +129,8 @@
 
 var CartController = function()
 {
-    var deleteCartline = function () {
-        $(".js-delete-cartline").click(function (e) {
+    var deleteCartline = function() {
+        $(".js-delete-cartline").click(function(e) {
             var link = $(e.target);
             var linkId = link.attr("data-cartline-id");
 
@@ -143,11 +143,11 @@ var CartController = function()
                         $(this).remove();
                     });
                 })
-                .fail(function () {
+                .fail(function() {
                     alert("Something failed");
                 });
         });
-
+    }
     var init= function() {
         $(".js-delete-cartline").click(deleteCartline);
     }
