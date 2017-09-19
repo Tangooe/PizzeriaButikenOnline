@@ -11,7 +11,6 @@ namespace PizzeriaButikenOnline.Core.ViewModels
             PaymentMenthods = new List<PaymentViewModel>
             {
                 new PaymentViewModel {Id = 1, Name = "Kontant" },
-                new PaymentViewModel {Id = 2, Name = "PayPal" },
                 new PaymentViewModel {Id = 3, Name = "Kort" },
             };
         }
@@ -50,5 +49,9 @@ namespace PizzeriaButikenOnline.Core.ViewModels
 
         public int PaymentMethod { get; set; }
         public List<PaymentViewModel> PaymentMenthods { get; set; }
+
+        [Display(Name = "Kortnummer")]
+        public string CardNumber { get; set; }
+        public string Cvc { get; set; }
     }
 }

@@ -62,12 +62,38 @@
             <div class="form-group">
                 @foreach (var paymentMethod in Model.PaymentMenthods)
                 {
+                    if (paymentMethod.Name == "Kontant")
+                    {
                     <div>
                         <label>
-                            <input asp-for="PaymentMethod" type="radio" value="@paymentMethod.Id" />
+                            <input asp-for="PaymentMethod" type="radio" value="@paymentMethod.Id" id="@paymentMethod.Id" data-toggle="collapse" data-target=".collapseCard.in" />
                             @paymentMethod.Name
                         </label>
                     </div>
+                    }
+                    if (paymentMethod.Name == "Kort")
+                    {
+                    <div>
+                        <label>
+                            <input asp-for="PaymentMethod" type="radio" value="@paymentMethod.Id" id="@paymentMethod.Id" data-toggle="collapse" data-target=".collapseCard:not(.in)" />
+                            @paymentMethod.Name
+                        </label>
+                    </div>
+                    <div class="panel panel-default panel-collapse collapse collapseCard">
+                        <div class="panel-body" id="card-acordion">
+                            <div class="form-group">
+                                <label asp-for="CardNumber" class="control-label"></label>
+                                <input asp-for="CardNumber" class="form-control" />
+                                <span asp-validation-for="CardNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Cvc" class="control-label"></label>
+                                <input asp-for="Cvc" class="form-control" />
+                                <span asp-validation-for="Cvc" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    }
                 }
             </div>
         </div>
